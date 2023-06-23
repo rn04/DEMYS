@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PjhrMapper">
+	<select id="getPjhrListByPJ_NUM" parameterType="int" resultType="pjhr">
+		SELECT *
+		FROM PJHR
+		WHERE PJ_NUM=#{PJ_NUM}
+		ORDER BY PJHR_NUM DESC
+	</select>
+	<select id="getPjhrListByMEMBER_NUM" parameterType="int"
+		resultType="pjhr">
+		SELECT *
+		FROM PJHR
+		WHERE MEMBER_NUM=#{MEMBER_NUM}
+		ORDER BY PJHR_NUM DESC
+	</select>
+	<select id="getPjhrByPJHR_NUM" parameterType="int"
+		resultType="pjhr">
+		SELECT *
+		FROM PJHR
+		WHERE PJHR_NUM=#{PJHR_NUM}
+	</select>
+	<select id="selectPjhrSequenceNextValue" resultType="int">
+		SELECT
+		PJHR_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registPjhr" parameterType="pjhr">
+		INSERT INTO
+		PJHR(PJHR_WORK,PJHR_DETAIL,PJ_NUM,MEMBER_NUM)
+		VALUES(#{PJHR_WORK},#{PJHR_DETAIL},#{PJ_NUM},#{MEMBER_NUM})
+	</insert>
+	<update id="modifyPjhr" parameterType="pjhr">
+		UPDATE PJHR
+		SET
+		PJHR_WORK=#{PJHR_WORK},PJHR_DETAIL=#{PJHR_DETAIL},PJ_NUM=#{PJ_NUM},MEMBER_NUM=#{MEMBER_NUM}
+		WHERE PJHR_NUM=#{PJHR_NUM}
+	</update>
+	<delete id="removePjhr" parameterType="int">
+		DELETE
+		FROM PJHR
+		WHERE PJHR_NUM=#{PJHR_NUM}
+	</delete>
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ducks.demys.boot.repository.ProductRepository">
+   <select id="getProductListByPJ_NUM" resultType="Product">
+      SELECT p.*, m.MEMBER_NAME
+      FROM PRODUCT p, MEMBER m
+      WHERE p.MEMBER_NUM = m.MEMBER_NUM
+      and PJ_NUM=#{PJ_NUM}
+      and PRODUCT_STEP = #{PRODUCT_STEP}
+      ORDER BY PRODUCT_NUM DESC
+   </select>
+   
+   <select id="getSearchProductList" resultType="Product">
+      SELECT p.*, m.MEMBER_NAME
+      FROM PRODUCT p, MEMBER m
+      WHERE p.MEMBER_NUM = m.MEMBER_NUM
+      and PJ_NUM=#{PJ_NUM}
+      <if test="PRODUCT_STEP != null and PRODUCT_STEP != '0'.toString()">
+         and PRODUCT_STEP like '%'||#{PRODUCT_STEP}||'%'
+      </if>  
+      <if test="searchKeyword != ''">
+            <choose>
+               <when test="searchKeywordTypeCode == 'PRODUCT_TITLE'">
+               AND p.PRODUCT_TITLE LIKE '%'||#{searchKeyword}||'%'
+               </when>
+               <when test="searchKeywordTypeCode == 'PRODUCT_CONTENT'">
+               AND p.PRODUCT_CONTENT LIKE '%'||#{searchKeyword}||'%'
+               </when>
+            </choose>
+      </if>
+      ORDER BY p.PRODUCT_REGDATE DESC, p.PRODUCT_TITLE DESC
+      
+      <!-- <if test="limitTake != -1">
+         LIMIT #{limitStart}, #{limitTake}
+      </if> -->
+   </select>
+   
+   <select id="getProductListByOnlyPJ_NUM" resultType="Product">
+      SELECT p.*, m.MEMBER_NAME
+      FROM PRODUCT p, MEMBER m
+      WHERE p.MEMBER_NUM = m.MEMBER_NUM
+      ORDER BY p.PRODUCT_NUM DESC
+      
+      <!-- SELECT p.*, m.MEMBER_NAME
+      FROM PRODUCT p, MEMBER m
+      WHERE p.MEMBER_NUM = m.MEMBER_NUM
+      and PJ_NUM=#{PJ_NUM}
+      ORDER BY PRODUCT_NUM DESC -->
+   </select>
+   <select id="getProductByPRODUCT_NUM" resultType="Product">
+      SELECT p.*, m.MEMBER_NAME
+      FROM PRODUCT p, MEMBER m
+      WHERE p.MEMBER_NUM=m.MEMBER_NUM
+      and p.PRODUCT_NUM=#{PRODUCT_NUM}
+   </select>
+   <select id="selectProductSequenceNextValue" resultType="int">
+      SELECT
+      PRODUCT_seq.nextVal
+      FROM DUAL
+   </select>
+   <insert id="registProduct">
+      INSERT INTO
+      PRODUCT(PRODUCT_NUM,PRODUCT_STEP,PRODUCT_TITLE,PRODUCT_CONTENT,PRODUCT_STATUS,MEMBER_NUM,PJ_NUM)
+      VALUES(#{PRODUCT_NUM},#{PRODUCT_STEP},#{PRODUCT_TITLE},#{PRODUCT_CONTENT},#{PRODUCT_STATUS},#{MEMBER_NUM},#{PJ_NUM})
+   </insert>
+   <update id="modifyProduct">
+      UPDATE PRODUCT
+      SET
+      PRODUCT_STEP=#{PRODUCT_STEP},PRODUCT_TITLE=#{PRODUCT_TITLE},PRODUCT_CONTENT=#{PRODUCT_CONTENT},PRODUCT_STATUS=#{PRODUCT_STATUS},MEMBER_NUM=#{MEMBER_NUM},PJ_NUM=#{PJ_NUM},PRODUCT_UPDATEDATE=SYSDATE
+      WHERE PRODUCT_NUM=#{PRODUCT_NUM}
+   </update>
+   <update id="changeStatusProduct">
+      UPDATE PRODUCT
+      SET
+      PRODUCT_STATUS=#{PRODUCT_STATUS}
+      WHERE PRODUCT_NUM=#{PRODUCT_NUM}
+   </update>
+   <delete id="removeProduct">
+      DELETE
+      FROM PRODUCT
+      WHERE PRODUCT_NUM=#{PRODUCT_NUM}
+   </delete>
+</mapper>

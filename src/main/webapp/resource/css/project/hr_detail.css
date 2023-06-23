@@ -1,0 +1,80 @@
+ @charset "UTF-8";
+
+.hr_detail{
+}
+
+/* 오프윈도우 헤더 */
+.openWindow-head{
+   width: 100%; 
+   padding: 0px; 
+   min-height: 1rem; 
+   height: 50px;
+}
+.openWindow-head-1{
+   font-weight: bold; 
+   font-size: 1rem; 
+   margin-right: auto;
+   color:white;
+}
+
+/* 오픈윈도우 구현 */
+.hr-detail-conts{
+   padding:10px;
+}
+.hr-detail-title{
+   border-bottom:4px solid #016FA0;   
+   width: 100%;
+   font-weight:bold;;
+   font-size:22px;
+   padding:5px;
+}
+
+.hr-regi-cont>div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align:center;
+    padding: 13px 8px;
+}
+.hr-detail-cont-0{
+    border: 2px solid #AAAAAA;
+    margin: 20px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.hr-img{
+   border-right: 2px solid #AAAA;
+   width:35%;
+   height:100%;
+   display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 34px 0;
+}
+.hr-detail_1{
+   width:65%;
+   padding: 0 15px;
+   display: flex;
+    flex-direction: column;
+}
+.hr-detail_1>div{
+   padding:5px;
+}
+/* 버튼 */
+.p-regi-modal-bts{
+   display: flex;
+    justify-content: center;
+}
+.p-regi-modal-bt{
+   font-size: 20px; 
+   width: 100px; 
+   height: 40px; 
+   background-color: #153A66; 
+   color: white; 
+   border-radius: 8px;
+   margin:0 5px;
+}
+.p-regi-modal-bt:hover{
+   background-color:#11263F;
+}

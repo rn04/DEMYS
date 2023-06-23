@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MessageMapper">
+	<select id="getMessageListByMEMBER_NUM" parameterType="int"
+		resultType="msg">
+		SELECT *
+		FROM MESSAGE
+		WHERE MEMBER_NUM=#{MEMBER_NUM}
+		ORDER BY MSG_NUM DESC
+	</select>
+	<select id="getMessageByMSG_NUM" parameterType="int"
+		resultType="msg">
+		SELECT *
+		FROM MESSAGE
+		WHERE MSG_NUM=#{MSG_NUM}
+	</select>
+	<select id="selectMessageSequenceNextValue" resultType="int">
+		SELECT
+		MESSAGE_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registMessage" parameterType="msg">
+		INSERT INTO
+		MESSAGE(MSG_TYPE,MSG_TYPEPK,MSG_CONTENT,MSG_URL,PJ_NUM,MEMBER_NUM,SENDMEMBER_NUM)
+		VALUES(#{MSG_TYPE},#{MSG_TYPEPK},#{MSG_CONTENT},#{MSG_URL},#{PJ_NUM},#{MEMBER_NUM},#{SENDMEMBER_NUM})
+	</insert>
+	<update id="modifyMessage" parameterType="msg">
+		UPDATE MESSAGE
+		SET
+		MSG_READDATE=SYSDATE
+		WHERE MSG_NUM=#{MSG_NUM}
+	</update>
+	<delete id="removeMessage" parameterType="int">
+		DELETE
+		FROM MESSAGE
+		WHERE MSG_NUM=#{MSG_NUM}
+	</delete>
+</mapper>

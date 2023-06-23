@@ -1,0 +1,146 @@
+@charset "UTF-8";
+
+.budget_head {
+	height: 50px;
+	margin: 0 auto;
+	margin-top: 20px;
+	background-color: #153A66;
+	display: flex;
+}
+
+.budget_head_b {
+	font-weight: bold;
+	font-size: 20px;
+	color: white;
+	line-height: 50px;
+	margin-left: auto;
+	margin-right: 20px;
+}
+
+.budget_body {
+	border: 1px solid;
+	height: 700px;
+	margin: 0 auto;
+	background-color: #F2F2F2;
+}
+
+.card {
+	border: 1px solid;
+	margin-left: 35px;
+	margin-top: 20px;
+	width: 375px;
+	border-radius: 8px;
+}
+
+.card:hover {
+	border: 4px solid rgb(30, 202, 240);
+}
+
+.card_head {
+	height: 120px;
+	background-color: #F0F8FF;
+	display: flex;
+	flex-direction: column;
+	padding: 10px 5px 5px 18px;
+	border-radius: 8px 8px 0 0;
+}
+
+.card_head_a {
+	display: flex;
+	height: 30px;
+	width: 100%;
+}
+
+.head_status {
+	width: 70px;
+	height: 25px;
+	line-height: 20px;
+	font-size: 15px;
+	font-weight: 600;
+	margin: 5px;
+}
+
+.card_head_b {
+	display: flex;
+	width: 100%;
+}
+
+.head_title {
+	width: 100%;
+	font-size: 20px;
+	font-weight: bold;
+	margin-top: 5px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.card_head_c {
+	display: flex;
+	height: 30px;
+	width: 100%;
+	margin-top: 5px;
+}
+
+.head_reg {
+	width: 100%;
+	font-size: 12px;
+	font-weight: bold;
+	color: #AAAAAA;
+	margin-top: 5px;
+	margin-left: 35px;
+}
+
+.card_body {
+	height: 220px;
+	background-color: white;
+	display: flex;
+	border-radius: 0 0 8px 8px;
+	flex-direction: column;
+}
+
+.card_body_a {
+	width: 480px;
+}
+
+.table {
+	margin: 10px;
+	margin-top: 15px;
+	width: 73%;
+}
+
+.table_tbody {
+	font-weight: bold;
+	/* 	width:300px; */
+}
+
+td, th {
+	border: none;
+}
+
+th {
+	margin-left: 5px;
+}
+
+td {
+	text-align: right;
+}
+
+.table :where(th, td) {
+	white-space: nowrap;
+	vertical-align: middle;
+	padding: 10px;
+}
+
+.card {
+	margin: 10px;
+}
+
+/* 예산수립 빈화면일때 아이콘 */
+.budget_body_icon {
+	font-size: 5rem;
+	position: absolute;
+	width: 75%;
+	top: 60%;
+	text-align: center;
+}

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ducks.demys.boot.repository.IssueRepository">
+   <sql id="search">
+      <if test="ISSUE_IMP != null and ISSUE_IMP != 0">
+         WHERE ISSUE.ISSUE_IMP LIKE '%'||#{ISSUE_IMP}||'%' 
+      </if>
+      <if test="MEMBER_NUM != null and MEMBER_NUM != 0">
+         AND PROJECTS.MEMBER_NUM = #{MEMBER_NUM}
+      </if>
+   </sql>
+   
+   <sql id="myIssue">
+      <if test="MYISSUE != null and MYISSUE != 0">
+         JOIN ISSUE_TAG ON ISSUE.ISSUE_NUM = ISSUE_TAG.ISSUE_NUM
+         WHERE ISSUE_TAG.MEMBER_NUM = #{MYISSUE}
+      </if>
+   </sql>
+
+   <sql id="orderby">
+      <if test="SORT =='end'.toString()">
+         ORDER BY ISSUE.ISSUE_DEADLINE ASC
+      </if>
+      <if test="SORT =='reg'.toString()">
+         ORDER BY ISSUE.ISSUE_REGDATE DESC
+      </if>
+   </sql>
+   
+   <select id="getIssueListForDashboard" resultType="issue">
+      SELECT ISSUE.*, MEMBER.MEMBER_NAME, COALESCE(COUNT(ISSUEREPLY.ISSUE_NUM), 0) AS ISSUEREPLY_COUNT
+      FROM ISSUE
+      JOIN MEMBER
+      ON ISSUE.MEMBER_NUM = MEMBER.MEMBER_NUM
+      LEFT JOIN ISSUEREPLY
+      ON ISSUE.ISSUE_NUM = ISSUEREPLY.ISSUE_NUM
+      GROUP BY ISSUE.ISSUE_NUM, ISSUE.ISSUE_TITLE, ISSUE.ISSUE_CONTENT, ISSUE.ISSUE_IMP, ISSUE.ISSUE_STATUS, ISSUE.ISSUE_REGDATE, ISSUE.ISSUE_UPDATEDATE, ISSUE.ISSUE_DEADLINE, ISSUE.ISSUE_ENDDATE, ISSUE.MEMBER_NUM, ISSUE.PJ_NUM, MEMBER.MEMBER_NAME
+      ORDER BY ISSUE.ISSUE_NUM DESC
+   </select>
+   
+   <select id="getIssueListForBottomDashboard" resultType="issue">
+      SELECT ISSUE.*, MEMBER.MEMBER_NAME, MEMBER.MEMBER_ID, PROJECTS.PJ_NAME, CONTACTS.CT_NAME, COALESCE(COUNT(ISSUEREPLY.ISSUE_NUM), 0) AS ISSUEREPLY_COUNT
+      FROM ISSUE
+      JOIN MEMBER ON ISSUE.MEMBER_NUM = MEMBER.MEMBER_NUM
+      LEFT JOIN PROJECTS ON ISSUE.PJ_NUM = PROJECTS.PJ_NUM
+      JOIN CONTACTS ON PROJECTS.CT_NUM = CONTACTS.CT_NUM
+      LEFT JOIN ISSUEREPLY ON ISSUE.ISSUE_NUM = ISSUEREPLY.ISSUE_NUM
+      <include refid="myIssue"/>
+      GROUP BY ISSUE.ISSUE_NUM, ISSUE.ISSUE_TITLE, ISSUE.ISSUE_CONTENT, ISSUE.ISSUE_IMP, ISSUE.ISSUE_STATUS, ISSUE.ISSUE_REGDATE, ISSUE.ISSUE_UPDATEDATE, ISSUE.ISSUE_DEADLINE, ISSUE.ISSUE_ENDDATE, ISSUE.MEMBER_NUM, ISSUE.PJ_NUM, MEMBER.MEMBER_NAME, MEMBER.MEMBER_ID, PROJECTS.PJ_NAME, CONTACTS.CT_NAME
+      <include refid="orderby"/>
+   </select>
+
+   <select id="getIssueListByPJ_NUM" resultType="Issue">
+      SELECT i.*, m.MEMBER_NAME,m.MEMBER_ID
+      FROM ISSUE i, MEMBER m
+      WHERE PJ_NUM = #{PJ_NUM}
+      and i.MEMBER_NUM = m.MEMBER_NUM
+   </select>
+   
+<!--    <select id="getIssueList" resultType="issue">
+      SELECT *
+      FROM ISSUE
+      ORDER BY ISSUE_NUM DESC
+   </select> -->
+   
+   <select id="getIssueListByMEMBER_NUM" resultType="Issue">
+      SELECT i.*, m.MEMBER_NAME
+      FROM ISSUE i, MEMBER m
+      WHERE MEMBER_NUM=#{MEMBER_NUM}
+   </select>
+   
+   <select id="getIssueReplyListByISSUE_NUM" resultType="IssueReply">
+      SELECT i.*, m.MEMBER_NAME
+      FROM ISSUEREPLY i, MEMBER m
+      WHERE ISSUERE_NUM=#{ISSUE_NUM}
+        and m.member_num = i.member_num
+   </select>
+   
+   <select id="getIssueByISSUE_NUM" resultType="Issue">
+      SELECT i.*, m.MEMBER_NAME
+      FROM ISSUE i, MEMBER m
+      WHERE i.MEMBER_NUM = m.MEMBER_NUM
+      and ISSUE_NUM=#{ISSUE_NUM}
+   </select>
+   
+   <select id="selectIssueSequenceNextValue" resultType="int">
+      SELECT
+      ISSUE_seq.nextVal
+      FROM DUAL
+   </select>
+   
+   <insert id="registIssue">
+      INSERT INTO
+      ISSUE(ISSUE_NUM,ISSUE_TITLE,ISSUE_CONTENT,ISSUE_IMP,ISSUE_STATUS,ISSUE_REGDATE,ISSUE_DEADLINE,MEMBER_NUM,PJ_NUM)
+      VALUES(#{ISSUE_NUM},#{ISSUE_TITLE},#{ISSUE_CONTENT},#{ISSUE_IMP},#{ISSUE_STATUS},TO_DATE(#{STRING_REGDATE},'YYYY-MM-DD'),TO_DATE(#{STRING_DEADLINE},'YYYY-MM-DD'),#{MEMBER_NUM},#{PJ_NUM})
+   </insert>
+   
+   <update id="modifyIssue">
+      UPDATE ISSUE
+      SET
+      ISSUE_TITLE=#{ISSUE_TITLE},ISSUE_CONTENT=#{ISSUE_CONTENT},ISSUE_IMP=#{ISSUE_IMP},ISSUE_STATUS=#{ISSUE_STATUS},ISSUE_REGDATE=TO_DATE(#{STRING_REGDATE},'YYYY-MM-DD'),ISSUE_DEADLINE=TO_DATE(#{STRING_DEADLINE},'YYYY-MM-DD'),MEMBER_NUM=#{MEMBER_NUM},PJ_NUM=#{PJ_NUM},ISSUE_UPDATEDATE=SYSDATE
+      WHERE ISSUE_NUM=#{ISSUE_NUM}
+   </update>
+   
+   <delete id="removeIssue">
+      DELETE
+      FROM ISSUE
+      WHERE ISSUE_NUM=#{ISSUE_NUM}
+   </delete> 
+   
+   <select id="getIssuePjListCount" resultType="int">
+      SELECT COUNT(I.PJ_NUM)
+      FROM ISSUE I, PROJECTS P
+      WHERE I.PJ_NUM = P.PJ_NUM and I.PJ_NUM = #{PJ_NUM}
+   </select>
+   
+   <insert id="registIssueReply">
+      INSERT INTO
+      ISSUEREPLY(ISSUERE_CONTENT,MEMBER_NUM,ISSUE_NUM)
+      VALUES(#{ISSUERE_CONTENT},#{MEMBER_NUM},#{ISSUE_NUM})
+   </insert>
+   
+   <update id="modifyIssueReply">
+      UPDATE ISSUEREPLY
+      SET
+      ISSUERE_CONTENT=#{ISSUERE_CONTENT},MEMBER_NUM=#{MEMBER_NUM},ISSUE_NUM=#{ISSUE_NUM},ISSUERE_UPDATEDATE=SYSDATE
+      WHERE ISSUERE_NUM=#{ISSUERE_NUM}
+   </update>
+   
+   <delete id="removeIssueReply">
+      DELETE
+      FROM ISSUEREPLY
+      WHERE ISSUERE_NUM=#{ISSUERE_NUM}
+   </delete>
+</mapper>

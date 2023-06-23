@@ -1,0 +1,267 @@
+.btn-wrap {
+   margin-bottom: 15px;
+   width: 400px;
+   justify-content: space-between;
+}
+
+.fc-event {
+   margin-top: 5px;
+   cursor: move;
+}
+
+#calendar {
+   height: 800px;
+   min-height: 500px;
+   width: 100%;
+   margin-top:10px;
+   /* float:right; */
+   
+}
+/* 일정추가버튼 */
+.addbtn {
+  cursor: pointer;
+  font-size: 15px;
+  width: 100px;
+  height: 40px;
+  background-color: #153A66;
+  color: white;
+  border-radius: 8px;
+}
+
+.addbtn:hover {
+  background-color: #f1f7ff;
+  color: #153A66;
+  border: 1px solid #153A66;
+  font-weight: bold;
+}
+
+ #cal_modal {
+   display: none;
+   position: relative;
+   width: 100%;
+   z-index: 3;
+}
+
+#pj_modal{
+   display: none;
+   position: relative;
+   width: 100%;
+   z-index: 6;
+}
+
+#modi_pj_modal, #modi_cal_modal {
+   display: none;
+   position: relative;
+   width: 100%;
+   z-index: 5;
+}
+
+#pj_modal h2, #cal_modal h2 {
+   margin: 0;
+}
+
+#modi_pj_modal h2, #modi_cal_modal h2 {
+   margin: 0;
+}
+/* 모달창 크기 조절 */
+#pj_modal .modal_content, #cal_modal .modal_content {
+   width: 500px;
+   height: 700px; 
+   top: 50%; 
+   background: #fff;
+   border: 2px solid #666;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   position: fixed;
+}
+/* 모달창 크기 조절 */
+#modi_pj_modal .modal_content, #modi_cal_modal .modal_content {
+   width: 500px;
+   height: 700px; 
+   top: 50%; 
+   background: #fff;
+   border: 2px solid #666;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   position: fixed;
+}
+/* 모달창 뒷 배경 */
+#pj_modal .modal_layer, #cal_modal .modal_layer {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, 0.5);
+   z-index: -3;
+}
+/* 모달창 뒷 배경 */
+#modi_pj_modal .modal_layer, #modi_cal_modal .modal_layer {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, 0.5);
+   z-index: -1;
+}
+/* 모달헤더 */
+.modal-head{
+   width: 100%; 
+   padding: 0px; 
+   min-height: 1rem; 
+   height: 50px;
+}
+.modal-head-0{
+   font-weight: bold; 
+   font-size: 1rem; 
+   margin-right: auto;
+}
+/* 모달 화면구현 */
+.cts-view{
+   padding:10px;
+}
+.cts-title{
+   border-bottom:4px solid #016FA0;   
+   width: 100%;
+   font-weight:bold;;
+   font-size:22px;
+   padding:5px;
+}
+.cts-title-sub{
+   margin:5px 0;
+   color:#333333;
+   font-weight:bold;
+}
+
+.cts-serch-list{
+   width:100%;
+   height:450px;
+   background-color:#e7e7e7;
+   margin-bottom:10px;
+   padding:5px;
+   overflow:auto;
+   overflow-x:hidden;
+}
+.cts-serch-list>table{
+   width:100%;
+}
+.cts-serch-list tr{
+   height:40px;
+   margin:5px;
+   padding:5px;
+   background-color:white;
+   border:1px solid #aaaaaa;
+}
+.cts-serch-list tr:hover{
+   background-color:#e7e7e7e7;
+}
+.cts-serch-list tr>td:first-child{
+   font-weight:bold;
+   padding-left:10px;
+}
+.cts-serch-list tr>td{
+   padding-left:30px;
+}
+
+
+
+/* 등록폼 */
+.p-modal-serach{
+   display:flex;
+   flex-direction:row;
+   width:100%;
+    align-items: center;
+    margin:5px 40px;
+    
+    /* border: 1px solid #aaaaaa; */
+    /* border-radius: 5px; */
+    padding: 5px;
+    text-align: left;
+}
+
+.p-modal-searchbar{
+   width: 100%;
+   height:100%;
+    display: flex;
+}
+.p-modal-searchbar-input{
+   width:85%;
+   height: 35px;
+    min-height: 35px;
+}
+
+/* 디테일폼 */
+.p-modal_modi-serach{
+   display:flex;
+   flex-direction:row;
+   width:100%;
+    align-items: center;
+    margin:5px 40px;
+    
+    /* border: 1px solid #aaaaaa; */
+    /* border-radius: 5px; */
+    padding: 5px;
+    text-align: left;
+}
+
+.p-modal_modi-searchbar{
+   width: 100%;
+   height:100%;
+    display: flex;
+}
+.p-modal_modi-searchbar-input{
+   width:85%;
+   height: 35px;
+    min-height: 35px;
+}
+.p-cts-select{
+   height: 30px;
+    min-height: 30px;
+    width: 22%;
+    margin-right:10px;
+}
+/* 수정폼 */
+.p-Modify_modal-serach{
+   display:flex;
+   flex-direction:row;
+   width:100%;
+    align-items: center;
+    margin:5px 40px;
+    
+    /* border: 1px solid #aaaaaa; */
+    /* border-radius: 5px; */
+    padding: 5px;
+    text-align: left;
+}
+
+.p-Modify_modal-searchbar{
+   width: 100%;
+   height:100%;
+    display: flex;
+}
+.p-Modify_modal-searchbar-input{
+   width:85%;
+   height: 35px;
+    min-height: 35px;
+}
+.p-cts-select{
+   height: 30px;
+    min-height: 30px;
+    width: 22%;
+    margin-right:10px;
+}
+/* 모달 버튼 */
+.p-regi-modal-bts{
+   display: flex; 
+   justify-content: center;
+}
+.p-regi-modal-bt{
+   font-size: 20px; 
+   width: 100px; 
+   height: 40px; 
+   background-color: #153A66; 
+   color: white; 
+   border-radius: 8px;
+   margin:20px 5px;
+}

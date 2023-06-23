@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PjctMapper">
+	<select id="getPjctListByPJ_NUM" parameterType="int" resultType="pjct">
+		SELECT *
+		FROM PJCT
+		WHERE PJ_NUM=#{PJ_NUM}
+		ORDER BY PJCT_NUM DESC
+	</select>
+	<select id="getPjctListByCT_NUM" parameterType="int"
+		resultType="pjct">
+		SELECT *
+		FROM PJCT
+		WHERE CT_NUM=#{CT_NUM}
+		ORDER BY PJCT_NUM DESC
+	</select>
+	<select id="getPjctByPjct_NUM" parameterType="int"
+		resultType="pjct">
+		SELECT *
+		FROM PJCT
+		WHERE PJCT_NUM=#{PJCT_NUM}
+	</select>
+	<select id="selectPjctSequenceNextValue" resultType="int">
+		SELECT
+		PJCT_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registPjct" parameterType="pjct">
+		INSERT INTO
+		PJCT(CT_NUM,PJ_NUM,PJCT_TYPE)
+		VALUES(#{CT_NUM},#{PJ_NUM},#{PJCT_TYPE})
+	</insert>
+	<update id="modifyPjct" parameterType="pjct">
+		UPDATE PJCT
+		SET
+		CT_NUM=#{CT_NUM},PJ_NUM=#{PJ_NUM},PJCT_TYPE=#{PJCT_TYPE}
+		WHERE PJCT_NUM=#{PJCT_NUM}
+	</update>
+	<delete id="removePjct" parameterType="int">
+		DELETE
+		FROM PJCT
+		WHERE PJCT_NUM=#{PJCT_NUM}
+	</delete>
+</mapper>

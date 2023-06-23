@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Product_AttachMapper">
+	<select id="getProduct_AttachListByPRODUCT_NUM" parameterType="int" resultType="pdat">
+		SELECT *
+		FROM PRODUCT_ATTACH
+		WHERE PRODUCT_NUM=#{PRODUCT_NUM}
+		ORDER BY PDAT_NUM DESC
+	</select>
+	<select id="getPdatByPDAT_NUM" parameterType="int"
+		resultType="pdat">
+		SELECT *
+		FROM PRODUCT_ATTACH
+		WHERE PDAT_NUM=#{PDAT_NUM}
+	</select>
+	<select id="selectProduct_AttachSequenceNextValue" resultType="int">
+		SELECT
+		PRODUCT_ATTACH_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registProduct_Attach" parameterType="pdat">
+		INSERT INTO
+		PRODUCT_ATTACH(PDAT_FILENAME,PDAT_FILETYPE,PDAT_UPLOADPATH,PRODUCT_NUM)
+		VALUES(#{PDAT_FILENAME},#{PDAT_FILETYPE},#{PDAT_UPLOADPATH},#{PRODUCT_NUM})
+	</insert>
+	<delete id="removeProduct_Attach" parameterType="int">
+		DELETE
+		FROM PRODUCT_ATTACH
+		WHERE PDAT_NUM=#{PDAT_NUM}
+	</delete>
+	<delete id="removeProduct_AttachAll" parameterType="int">
+		DELETE
+		FROM PRODUCT_ATTACH
+		WHERE PRODUCT_NUM=#{PRODUCT_NUM}
+	</delete>
+</mapper>

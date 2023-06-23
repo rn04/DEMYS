@@ -1,0 +1,88 @@
+@charset "UTF-8";
+
+.p-body-cont{
+   width:100%;
+   height:inherit;
+   padding:5px;
+}
+.header-2-menu0, .p-info-detail-title{
+   width:100%;
+   border-bottom:2px solid #797979;
+   padding:7px 0;
+}
+.header-2-menu{
+   width:150px;
+   display:flex;
+   justify-content: space-around;
+   
+}
+.header-2-menu:hover{
+   font-weight:bold;
+   font-size:18px;
+}
+
+/* 요구사항관리 */
+.rq-title{
+   display:flex;
+   flex-direction:row;
+    justify-content: space-between;
+   align-items: center;
+   width: 100%;
+    padding: 5px;
+    margin-top: 10px;
+}
+.rq-regi-bt{
+   height:40px;
+   width:100px;
+   background-color:#153A66;
+   color:white;
+   border-radius:8px;
+}
+.rq-list{
+   height: 600px;
+   overflow-y:auto;
+   overflow-x:hidden;
+   border-top:2px solid #333333;
+   border-bottom:2px solid #333333;
+}
+.rq-list >table{
+   border-bottom:3px solid #aaaaaa;
+   width:100%;
+}
+.rq-list>table tr{
+   width:100%;
+   border-bottom:2px solid #aaaaaa;
+   height: 40px;
+   line-height: 40px;
+}
+
+.rq-list tbody tr:hover{
+   background-color:#e7e7e7e7;
+}
+.rq-list>table>thead{
+   position: sticky; 
+   top: 0;
+   background-color:#D3D3D3;
+}
+.rq-list>table>thead>tr{
+   
+}
+.rq-list>table tr th+td{
+   padding:5px 0;
+}
+.rq-list>table tr th:first-child+th:last-child{
+   width:10%;
+   padding:0 10px;
+}
+.rq-list>table tr th:nth-child(2)+th:nth-child(6){
+   width:12%;
+}
+.rq-list>table tr th:nth-child(3)+th:nth-child(4){
+   width:14%;
+}
+.rq-list>table tr th:nth-child(5){
+   width:32%;
+}
+.rq-list>table tr td{
+   text-align:center;
+}

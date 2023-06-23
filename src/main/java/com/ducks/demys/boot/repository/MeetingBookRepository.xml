@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ducks.demys.boot.repository.MeetingBookRepository">
+   <select id="getMeetingBookListByPJ_NUM" resultType="MeetingBook">
+      SELECT h.*, m.MEMBER_NAME 
+      FROM MEETINGBOOK h, MEMBER m
+      WHERE h.MEMBER_NUM = m.MEMBER_NUM
+      and PJ_NUM=#{PJ_NUM}
+      ORDER BY MB_NUM DESC
+   </select>
+   
+   <select id="getMeetingBookByMB_NUM" resultType="MeetingBook">
+      SELECT h.*, m.MEMBER_NAME
+      FROM MEETINGBOOK h, MEMBER m
+      WHERE MB_NUM=#{MB_NUM}
+      and h.MEMBER_NUM = m.MEMBER_NUM
+   </select>
+   
+   <select id="getSearchMeetingbook" resultType="MeetingBook">
+      SELECT e.*, m.MEMBER_NAME
+      FROM MEETINGBOOK e, MEMBER m
+      WHERE e.MEMBER_NUM = m.MEMBER_NUM
+      and PJ_NUM = #{PJ_NUM}
+      <if test="searchKeyword != ''">
+            <choose>
+               <when test="searchKeywordTypeCode == 'MB_TITLE'">
+               AND e.MB_TITLE LIKE '%'||#{searchKeyword}||'%'
+               </when>
+               <when test="searchKeywordTypeCode == 'MEMBER_NAME'">
+               AND m.MEMBER_NAME LIKE '%'||#{searchKeyword}||'%'
+               </when>
+               <otherwise>
+               AND (
+                    e.MB_TITLE LIKE '%'||#{searchKeyword}||'%'
+                    OR
+                    m.MEMBER_NAME LIKE '%'||#{searchKeyword}||'%'
+                )
+               </otherwise>
+            </choose>
+      </if>
+      ORDER BY e.MB_NUM DESC
+      <!-- <if test="limitTake != -1">
+         LIMIT #{limitStart}, #{limitTake}
+      </if> -->
+   </select>
+   
+   <select id="selectMeetingBookSequenceNextValue" resultType="int">
+      SELECT
+      MEETINGBOOK_seq.nextVal
+      FROM DUAL
+   </select>
+   
+   <insert id="registMeetingBook">
+      INSERT INTO
+      MEETINGBOOK(MB_NUM,MB_TITLE,MB_CONTENT,MEMBER_NUM,PJ_NUM)
+      VALUES(#{MB_NUM},#{MB_TITLE},#{MB_CONTENT},#{MEMBER_NUM},#{PJ_NUM})
+   </insert>
+   
+   <update id="modifyMeetingBook">
+      UPDATE MEETINGBOOK
+      SET
+      MB_TITLE=#{MB_TITLE},MB_CONTENT=#{MB_CONTENT},MB_UPDATEDATE=SYSDATE
+      WHERE MB_NUM=#{MB_NUM}
+   </update>
+   
+   <delete id="removeMeetingBook">
+      DELETE
+      FROM MEETINGBOOK
+      WHERE MB_NUM=#{MB_NUM}
+   </delete>
+</mapper>

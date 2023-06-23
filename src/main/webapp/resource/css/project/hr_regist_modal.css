@@ -1,0 +1,105 @@
+@charset "UTF-8";
+
+#modal_hr, #modal_hr_3 {
+   display: none;
+   position: relative;
+   width: 100%;
+   height: 100%;
+   z-index: 1;
+}
+
+#modal_hr h2, #modal_hr_3 h2{
+   margin: 0;
+}
+/* 모달창 크기 조절 */
+#modal_hr .modal_hr_content_1, #modal_hr_3 .modal_hr_content_1{
+   width: 600px;
+   height: 500px; 
+   top: 50%; 
+   background: #fff;
+   border: 2px solid #666;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   position: fixed;
+}
+/* 모달창 뒷 배경 */
+#modal_hr .modal_layer, #modal_hr_3 .modal_layer{
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, 0.5);
+   z-index: -1;
+}
+/* 모달헤더 */
+.modal-head{
+   width: 100%; 
+   padding: 0px; 
+   min-height: 1rem; 
+   height: 50px;
+}
+.modal-head-0{
+   font-weight: bold; 
+   font-size: 1rem; 
+   margin-right: auto;
+}
+/* 모달 화면구현 */
+.cts-view{
+   padding:10px;
+}
+.hr-title{
+   border-bottom:4px solid #016FA0;   
+   width: 100%;
+   font-weight:bold;;
+   font-size:22px;
+   padding:5px;
+}
+.hr-regi-detail{
+
+}
+.hr-regi-cont{
+    border: 2px solid #AAAAAA;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.hr-regi-conts{
+   display:flex;
+   flex-direction:column;
+   width:65%;
+}
+.hr-regi-conts>div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align:center;
+    border: 1px solid #AAAAAA;
+    padding: 14px 8px;
+}
+.hr-icon{
+   border: 1px solid #AAAA;
+   width:35%;
+   height:286px;
+   display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 38px 0;
+}
+
+
+/* 모달 버튼 */
+.p-regi-modal-bts{
+   display: flex; 
+   justify-content: center;
+}
+.p-regi-modal-bt{
+   font-size: 20px; 
+   width: 100px; 
+   height: 40px; 
+   background-color: #153A66; 
+   color: white; 
+   border-radius: 8px;
+   margin:0 5px;
+}

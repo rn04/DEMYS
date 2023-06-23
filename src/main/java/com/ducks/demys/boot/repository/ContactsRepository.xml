@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ducks.demys.boot.repository.ContactsRepository">
+	
+	<sql id="consearch">
+ 		<if test="CT_TYPE != null and CT_TYPE != '' ">
+			and CT_TYPE=#{CT_TYPE}			
+		</if> 
+		<if test="searchType == 'n'.toString()">
+			and CT_NAME like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'm'.toString()">
+			and CT_MANAGER like '%'||#{keyword}||'%'			
+		</if>			
+	</sql>
+	
+	<sql id="search">
+		<if test="searchType == 'cn'.toString()">
+			and CT_NAME like '%'||#{keyword}||'%'
+		</if>
+		<if test="searchType == 'cc'.toString()">
+			and CT_CEO like '%'||#{keyword}||'%'
+		</if>
+	</sql>
+	
+	<select id="getSelectSearchContactsList" resultType="Contacts">
+		SELECT *
+		FROM CONTACTS
+		WHERE CT_NUM IS NOT NULL
+		<include refid="consearch"/>
+		ORDER BY CT_NUM DESC
+	</select>
+	
+	<select id="selectSearchContactsListCount" resultType="Integer">
+		SELECT
+		COUNT(*) 
+		FROM CONTACTS
+		WHERE CT_NUM IS NOT NULL
+		<include refid="consearch" />
+		ORDER BY CT_NUM DESC
+	</select>
+	
+	<select id="getContactsList" resultType="Contacts">
+		SELECT *
+		FROM CONTACTS
+		ORDER BY CT_NUM DESC
+		<include refid="search"/>
+	</select>
+	
+	<select id="getContactsListByPJ_NUM" resultType="Contacts">
+		SELECT *
+		FROM CONTACTS
+		WHERE PJ_NUM=#{PJ_NUM}
+		ORDER BY CT_NUM DESC
+	</select>
+	
+	<select id="getContactsByCT_NUM" resultType="Contacts">
+		SELECT *
+		FROM CONTACTS
+		WHERE CT_NUM=#{CT_NUM}
+	</select>
+	
+	<select id="getContactsByCT_NAME" resultType="Contacts">
+		SELECT *
+		FROM CONTACTS
+		WHERE CT_NAME=#{CT_NAME}
+	</select>
+	
+	<select id="selectContactsSequenceNextValue" resultType="int">
+		SELECT
+		CONTACTS_seq.nextVal
+		FROM DUAL
+	</select>
+	
+	<update id="registContacts">
+		INSERT INTO
+		CONTACTS(CT_NUM,CT_NAME,CT_TEL,CT_CEO,CT_MANAGER,CT_MG_TEL,CT_TYPE,CT_ADDR,CT_EMAIL,CT_FAX)
+		VALUES(#{CT_NUM},#{CT_NAME},#{CT_TEL},#{CT_CEO},#{CT_MANAGER},#{CT_MG_TEL},#{CT_TYPE},#{CT_ADDR},#{CT_EMAIL},#{CT_FAX})
+	</update>
+	
+	<update id="modifyContacts">
+		UPDATE CONTACTS
+		SET
+		CT_NAME=#{CT_NAME},CT_TEL=#{CT_TEL},CT_CEO=#{CT_CEO},CT_MANAGER=#{CT_MANAGER},CT_MG_TEL=#{CT_MG_TEL},CT_TYPE=#{CT_TYPE},CT_ADDR=#{CT_ADDR},CT_EMAIL=#{CT_EMAIL},CT_FAX=#{CT_FAX},CT_UPDATEDATE=SYSDATE
+		WHERE CT_NUM=#{CT_NUM}
+	</update>
+	
+	<delete id="removeContacts">
+		DELETE
+		FROM CONTACTS
+		WHERE CT_NUM=#{CT_NUM}
+	</delete>
+
+	<select id="getContactsListPjRegist" resultType="Contacts">
+		SELECT * 
+		FROM CONTACTS 
+		ORDER BY CT_NUM DESC
+	</select>
+	
+	<select id="getContactsListPjRegistSearch" resultType="Contacts">
+		SELECT * 
+		FROM CONTACTS 
+		WHERE CT_NUM IS NOT NULL
+		<include refid="search"/>
+		ORDER BY CT_NUM DESC
+	</select>
+	
+	<select id="getContactsPjctList" resultType="Contacts">
+		SELECT * 
+		FROM CONTACTS C
+		INNER JOIN PJCT PJ ON C.CT_NUM = PJ.CT_NUM
+		ORDER BY CT_NUM
+	</select>
+	
+	
+</mapper>

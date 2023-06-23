@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Issue_TagMapper">
+	<select id="getIssue_TagListByPJ_NUM" parameterType="int" resultType="issuetag">
+		SELECT *
+		FROM ISSUE_TAG
+		WHERE PJ_NUM=#{PJ_NUM}
+		ORDER BY ISSUETAG_NUM DESC
+	</select>
+	<select id="getIssue_TagListByMEMBER_NUM" parameterType="int"
+		resultType="issuetag">
+		SELECT *
+		FROM ISSUE_TAG
+		WHERE MEMBER_NUM=#{MEMBER_NUM}
+		ORDER BY ISSUETAG_NUM DESC
+	</select>
+	<select id="getIssue_TagByISSUETAG_NUM" parameterType="int"
+		resultType="issuetag">
+		SELECT *
+		FROM ISSUE_TAG
+		WHERE ISSUETAG_NUM=#{ISSUETAG_NUM}
+	</select>
+	<select id="selectIssue_TagSequenceNextValue" resultType="int">
+		SELECT
+		ISSUE_TAG_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registIssue_Tag" parameterType="issuetag">
+		INSERT INTO
+		ISSUE_TAG(PJ_NUM,MEMBER_NUM)
+		VALUES(#{PJ_NUM},#{MEMBER_NUM})
+	</insert>
+	<update id="modifyIssue_Tag" parameterType="issuetag">
+		UPDATE ISSUE_TAG
+		SET
+		PJ_NUM=#{PJ_NUM},MEMBER_NUM=#{MEMBER_NUM}
+		WHERE ISSUETAG_NUM=#{ISSUETAG_NUM}
+	</update>
+	<delete id="removeIssue_Tag" parameterType="int">
+		DELETE
+		FROM ISSUE_TAG
+		WHERE ISSUETAG_NUM=#{ISSUETAG_NUM}
+	</delete>
+</mapper>

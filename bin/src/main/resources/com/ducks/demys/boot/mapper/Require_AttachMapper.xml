@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Require_AttachMapper">
+	<select id="getRequire_AttachListByREQUIRE_NUM" parameterType="int" resultType="rqat">
+		SELECT *
+		FROM REQUIRE_ATTACH
+		WHERE REQUIRE_NUM=#{REQUIRE_NUM}
+		ORDER BY RQAT_NUM DESC
+	</select>
+	<select id="getRqatByRQAT_NUM" parameterType="int"
+		resultType="rqat">
+		SELECT *
+		FROM REQUIRE_ATTACH
+		WHERE RQAT_NUM=#{RQAT_NUM}
+	</select>
+	<select id="selectRequire_AttachSequenceNextValue" resultType="int">
+		SELECT
+		REQUIRE_ATTACH_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registRequire_Attach" parameterType="rqat">
+		INSERT INTO
+		REQUIRE_ATTACH(RQAT_FILENAME,RQAT_FILETYPE,RQAT_UPLOADPATH,REQUIRE_NUM)
+		VALUES(#{RQAT_FILENAME},#{RQAT_FILETYPE},#{RQAT_UPLOADPATH},#{REQUIRE_NUM})
+	</insert>
+	<delete id="removeRequire_Attach" parameterType="int">
+		DELETE
+		FROM REQUIRE_ATTACH
+		WHERE RQAT_NUM=#{RQAT_NUM}
+	</delete>
+	<delete id="removeRequire_AttachAll" parameterType="int">
+		DELETE
+		FROM REQUIRE_ATTACH
+		WHERE REQUIRE_NUM=#{REQUIRE_NUM}
+	</delete>
+</mapper>

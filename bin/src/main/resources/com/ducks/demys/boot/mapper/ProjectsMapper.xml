@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProjectsMapper">
+	<select id="getPJList" resultType="project">
+		SELECT *
+		FROM PROJECTS
+		ORDER BY PJ_NUM DESC
+	</select>
+	<select id="getPJListByMEMBER_NUM" parameterType="int"
+		resultType="project">
+		SELECT *
+		FROM PROJECTS
+		WHERE MEMBER_NUM=#{MEMBER_NUM}
+		ORDER BY PJ_NUM DESC
+	</select>
+	<select id="getPJByPJ_NUM" parameterType="int"
+		resultType="project">
+		SELECT *
+		FROM PROJECTS
+		WHERE PJ_NUM=#{PJ_NUM}
+	</select>
+	<select id="selectPJSequenceNextValue" resultType="int">
+		SELECT
+		PROJECTS_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registPJ" parameterType="project">
+		INSERT INTO
+		PROJECTS(PJ_NAME,PJ_STARTDATE,PJ_ENDDATE,PJ_IMP,PJ_CONTENT,PJ_TYPE,PJ_FIELD,PJ_GIT,PJ_PRICE,MEMBER_NUM,CT_NUM)
+		VALUES(#{PJ_NAME},#{PJ_STARTDATE},#{PJ_ENDDATE},#{PJ_IMP},#{PJ_CONTENT},#{PJ_TYPE},#{PJ_FIELD},#{PJ_GIT},#{PJ_PRICE},#{MEMBER_NUM},#{CT_NUM})
+	</insert>
+	<update id="modifyPJ" parameterType="project">
+		UPDATE PROJECTS
+		SET
+		PJ_NAME=#{PJ_NAME},PJ_STARTDATE=#{PJ_STARTDATE},PJ_ENDDATE=#{PJ_ENDDATE},PJ_IMP=#{PJ_IMP},PJ_CONTENT=#{PJ_CONTENT},PJ_TYPE=#{PJ_TYPE},PJ_FIELD=#{PJ_FIELD},PJ_GIT=#{PJ_GIT},PJ_PRICE=#{PJ_PRICE},MEMBER_NUM=#{MEMBER_NUM},CT_NUM=#{CT_NUM},PJ_UPDATEDATE=SYSDATE
+		WHERE PJ_NUM=#{PJ_NUM}
+	</update>
+	<delete id="removePJ" parameterType="int">
+		DELETE
+		FROM PROJECTS
+		WHERE PJ_NUM=#{PJ_NUM}
+	</delete>
+</mapper>

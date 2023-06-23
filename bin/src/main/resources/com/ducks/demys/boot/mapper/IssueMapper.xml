@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="IssueMapper">
+	<select id="getIssueList" resultType="issue">
+		SELECT *
+		FROM ISSUE
+		ORDER BY ISSUE_NUM DESC
+	</select>
+	<select id="getIssueListByPJ_NUM" parameterType="int"
+		resultType="issue">
+		SELECT *
+		FROM ISSUE
+		WHERE PJ_NUM=#{PJ_NUM}
+	</select>
+	<select id="getIssueListByMEMBER_NUM" parameterType="int"
+		resultType="issue">
+		SELECT *
+		FROM ISSUE
+		WHERE MEMBER_NUM=#{MEMBER_NUM}
+	</select>
+	<select id="getIssueByISSUE_NUM" parameterType="int"
+		resultType="issue">
+		SELECT *
+		FROM ISSUE
+		WHERE ISSUE_NUM=#{ISSUE_NUM}
+	</select>
+	<select id="selectIssueSequenceNextValue" resultType="int">
+		SELECT
+		ISSUE_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registIssue" parameterType="issue">
+		INSERT INTO
+		ISSUE(ISSUE_TITLE,ISSUE_CONTENT,ISSUE_IMP,ISSUE_STATUS,ISSUE_DEADLINE,ISSUE_ENDDATE,MEMBER_NUM,PJ_NUM)
+		VALUES(#{ISSUE_TITLE},#{ISSUE_CONTENT},#{ISSUE_IMP},#{ISSUE_STATUS},#{ISSUE_DEADLINE},#{ISSUE_ENDDATE},#{MEMBER_NUM},#{PJ_NUM})
+	</insert>
+	<update id="modifyIssue" parameterType="issue">
+		UPDATE ISSUE
+		SET
+		ISSUE_TITLE=#{ISSUE_TITLE},ISSUE_CONTENT=#{ISSUE_CONTENT},ISSUE_IMP=#{ISSUE_IMP},ISSUE_STATUS=#{ISSUE_STATUS},ISSUE_DEADLINE=#{ISSUE_DEADLINE},ISSUE_ENDDATE=#{ISSUE_ENDDATE},MEMBER_NUM=#{MEMBER_NUM},PJ_NUM=#{PJ_NUM},ISSUE_UPDATEDATE=SYSDATE
+		WHERE ISSUE_NUM=#{ISSUE_NUM}
+	</update>
+	<delete id="removeIssue" parameterType="int">
+		DELETE
+		FROM ISSUE
+		WHERE ISSUE_NUM=#{ISSUE_NUM}
+	</delete>
+</mapper>

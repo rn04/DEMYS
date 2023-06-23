@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ducks.demys.boot.repository.TasksRepository">
+	<select id="getTasksListByMEMBER_NUM" resultType="Tasks">
+        SELECT *
+        FROM TASKS
+        WHERE MEMBER_NUM=#{MEMBER_NUM}
+        ORDER BY TASKS_ENDDATE ASC
+    </select>
+	<select id="getTasksListByTASKS_STATUS" resultType="Tasks">
+		SELECT *
+		FROM TASKS
+		WHERE TASKS_STATUS=#{TASKS_STATUS}
+		ORDER BY TASKS_NUM DESC
+	</select>
+	<select id="getTasksList" resultType="Tasks">
+		SELECT *
+		FROM TASKS
+		ORDER BY TASKS_NUM DESC
+	</select>
+	<select id="getTasksByTASKS_NUM" resultType="Tasks">
+		SELECT *
+		FROM TASKS
+		WHERE TASKS_NUM=#{TASKS_NUM}
+	</select>
+	<select id="selectTasksSequenceNextValue" resultType="int">
+		SELECT
+		TASKS_seq.nextVal
+		FROM DUAL
+	</select>
+
+	<update id="registTasks">
+		INSERT INTO 
+		TASKS(TASKS_NUM,TASKS_CONTENT,TASKS_STATUS,TASKS_IMP,TASKS_ENDDATE,TASKS_SHARE,MEMBER_NUM) 
+		VALUES(#{TASKS_NUM},#{TASKS_CONTENT},#{TASKS_STATUS},#{TASKS_IMP},TO_DATE(#{STRING_ENDDATE}, 'YYYY-MM-DD HH24:MI:SS'),#{TASKS_SHARE},#{MEMBER_NUM})
+	</update>
+	<update id="modifyTasks">
+		UPDATE TASKS
+		SET
+		TASKS_CONTENT=#{TASKS_CONTENT},TASKS_IMP=#{TASKS_IMP},TASKS_ENDDATE=TO_DATE(#{STRING_ENDDATE}, 'YYYY-MM-DD HH24:MI:SS'),TASKS_SHARE=#{TASKS_SHARE},MEMBER_NUM=#{MEMBER_NUM}
+		WHERE TASKS_NUM=#{TASKS_NUM}
+	</update>
+	<update id="modifyTasksStatus">
+		UPDATE TASKS
+		SET
+		TASKS_STATUS=#{TASKS_STATUS}
+		WHERE TASKS_NUM=#{TASKS_NUM}
+	</update>
+	<update id="modifyTasksShare">
+		UPDATE TASKS
+		SET
+		TASKS_SHARE=#{TASKS_SHARE}
+		WHERE TASKS_NUM=#{TASKS_NUM}
+	</update>
+	<delete id="removeTasks">
+		DELETE
+		FROM TASKS
+		WHERE TASKS_NUM=#{TASKS_NUM}
+	</delete>
+</mapper>

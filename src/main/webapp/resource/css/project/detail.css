@@ -1,0 +1,179 @@
+@charset "UTF-8";
+
+.bold-menu {
+   font-weight: bold;
+}
+
+.p-body-cont{
+   width:100%;
+   height:inherit;
+   padding:5px;
+}
+.header-2-menu0, .p-info-detail-title{
+   width:100%;
+   border-bottom:2px solid #797979;
+   padding:7px 0;
+}
+.header-2-menu{
+   width:150px;
+   display:flex;
+   justify-content: space-around;
+   
+}
+.header-2-menu:hover{
+   font-weight:bold;
+   font-size:18px;
+}
+/* 프로젝트정보 */
+.p-info-detail{
+   
+}
+.p-info-detail-title{
+   display:flex;
+   flex-direction:row;
+    justify-content: space-between;
+   align-items: center;
+   width: 100%;
+    padding: 5px;
+    margin-top: 10px;
+}
+.p-info-detail-bt{
+   height:40px;
+   width:100px;
+   background-color:#153A66;
+   color:white;
+   border-radius:8px;
+}
+.p-info-detail-bt:hover, .p-info-sh-bt:hover{
+   background-color:#11263F;
+   font-weight:bold;
+}
+.p-detail-table{
+   width:100%;
+   padding:5px;
+   margin:5px 0;
+   border:1px solid;
+   padding:5px 0;
+   border-radius:8px;
+}
+.p-detail-table>table{
+   width:100%;
+}
+.p-detail-table tr{
+   width:100%;
+   height:35px;
+   line-height:35px;
+}
+.p-detail-table tr td{
+   padding-left:20px;
+   
+}
+.p-detail-table tr td:first-child{
+   width:22%;
+   border-right:1px solid;
+}
+.p-detail-table tr td:nth-child(2){
+   width:78%;
+}
+
+/* 프로젝트정보-거래처 */
+.p-info-cts-title{
+   display:flex;
+   flex-direction:row;
+    justify-content: space-between;
+   align-items: center;
+   width: 100%;
+    padding: 5px;
+    margin-top: 10px;
+}
+.p-cts-list{
+   height: 255px;
+   overflow-y:auto;
+   overflow-x:hidden;
+   border-top:2px solid #333333;
+   border-bottom:2px solid #333333;
+}
+.p-cts-list >table{
+   border-bottom:3px solid #aaaaaa;
+   width:100%;
+}
+.p-cts-list>table tr{
+   width:100%;
+   border-bottom:2px solid #aaaaaa;
+   height: 40px;
+    line-height: 40px;
+}
+
+.p-cts-list tbody tr:hover{
+   background-color:#e7e7e7e7;
+}
+.p-cts-list>table>thead{
+   position: sticky; 
+   top: 0;
+   background-color:#D3D3D3;
+}
+.p-cts-list>table>thead>tr{
+   
+}
+.p-cts-list>table tr th+td{
+   padding:5px 0;
+}
+.p-cts-list>table tr th:first-child+th:last-child{
+   width:10%;
+   padding:0 10px;
+}
+.p-cts-list>table tr th:nth-child(2)+th:nth-child(6){
+   width:12%;
+}
+.p-cts-list>table tr th:nth-child(3)+th:nth-child(4){
+   width:14%;
+}
+.p-cts-list>table tr th:nth-child(5){
+   width:32%;
+}
+.p-cts-list>table tr td{
+   text-align:center;
+}
+
+
+/* 수정css */
+.modify_css1{
+   border: 1px solid #dedede;
+    width: 550px;
+    height: 28px;
+    font-size: 15px;
+    border-radius: 6px;
+    padding-left:10px;
+}
+/* 버튼들어가는 라인 */
+.modify_css0{
+   border: 1px solid #dedede;
+    width: 470px;
+    height: 30px;
+    font-size: 15px;
+    border-radius: 6px;
+    padding-left:10px;
+}
+.sh-btts{
+   background-color: #f7f7f7;
+    font-weight: 600;
+}
+
+.p-info-sh-bt{
+   border: 2px solid #153A66;
+   height:30px;
+   width:70px;
+   color:#153A66;
+   border-radius:8px;
+   text-align:center;
+   margin-left:10px;
+   font-size:14px;
+   font-weight:bold;
+   line-height: 3px;
+}
+
+.p-info-sh-bt:hover{
+   background-color:#153A66;
+   font-weight:bold;
+   color:white;
+}

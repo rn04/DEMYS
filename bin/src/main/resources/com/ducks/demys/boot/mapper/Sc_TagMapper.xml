@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Sc_TagMapper">
+	<select id="getSc_TagListByMEMBER_NUM" parameterType="int" resultType="sctag">
+		SELECT *
+		FROM SC_TAG
+		WHERE MEMBER_NUM=#{MEMBER_NUM}
+		ORDER BY SCTAG_NUM DESC
+	</select>
+	<select id="getSc_TagListBySC_NUM" parameterType="int"
+		resultType="sctag">
+		SELECT *
+		FROM SC_TAG
+		WHERE SC_NUM=#{SC_NUM}
+		ORDER BY SCTAG_NUM DESC
+	</select>
+	<select id="getSc_TagBySCTAG_NUM" parameterType="int"
+		resultType="sctag">
+		SELECT *
+		FROM SC_TAG
+		WHERE SCTAG_NUM=#{SCTAG_NUM}
+	</select>
+	<select id="selectSc_TagSequenceNextValue" resultType="int">
+		SELECT
+		SC_TAG_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registSc_Tag" parameterType="sctag">
+		INSERT INTO
+		SC_TAG(SC_NUM,MEMBER_NUM)
+		VALUES(#{SC_NUM},#{MEMBER_NUM})
+	</insert>
+	<update id="modifySc_Tag" parameterType="sctag">
+		UPDATE SC_TAG
+		SET
+		SC_NUM=#{SC_NUM},MEMBER_NUM=#{MEMBER_NUM}
+		WHERE SCTAG_NUM=#{SCTAG_NUM}
+	</update>
+	<delete id="removeSc_Tag" parameterType="int">
+		DELETE
+		FROM SC_TAG
+		WHERE SCTAG_NUM=#{SCTAG_NUM}
+	</delete>
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ScheduleMapper">
+	<select id="getScheduleList" resultType="schedule">
+		SELECT *
+		FROM SCHEDULE
+		ORDER BY SC_NUM DESC
+	</select>
+	<select id="getScheduleListByMEMBER_NUM" parameterType="int"
+		resultType="schedule">
+		SELECT *
+		FROM SCHEDULE
+		WHERE MEMBER_NUM=#{MEMBER_NUM}
+		ORDER BY SC_NUM DESC
+	</select>
+	<select id="getScheduleBySC_NUM" parameterType="int"
+		resultType="schedule">
+		SELECT *
+		FROM SCHEDULE
+		WHERE SC_NUM=#{SC_NUM}
+	</select>
+	<select id="selectScheduleSequenceNextValue" resultType="int">
+		SELECT
+		SCHEDULE_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registSchedule" parameterType="schedule">
+		INSERT INTO
+		SCHEDULE(SC_NAME,SC_CONTENT,SC_IMP,SC_TYPE,SC_STARTDATE,SC_ENDDATE,SC_PLACE,SC_STATUS,PJ_NUM,MEMBER_NUM,TASKS_NUM)
+		VALUES(#{SC_NAME},#{SC_CONTENT},#{SC_IMP},#{SC_TYPE},#{SC_STARTDATE},#{SC_ENDDATE},#{SC_PLACE},#{SC_STATUS},#{PJ_NUM},#{MEMBER_NUM},#{TASKS_NUM})
+	</insert>
+	<update id="modifySchedule" parameterType="schedule">
+		UPDATE SCHEDULE
+		SET
+		SC_NAME=#{SC_NAME},SC_CONTENT=#{SC_CONTENT},SC_IMP=#{SC_IMP},SC_TYPE=#{SC_TYPE},SC_STARTDATE=#{SC_STARTDATE},SC_ENDDATE=#{SC_ENDDATE},SC_PLACE=#{SC_PLACE},SC_STATUS=#{SC_STATUS},PJ_NUM=#{PJ_NUM},MEMBER_NUM=#{MEMBER_NUM},TASKS_NUM=#{TASKS_NUM},SC_UPDATEDATE=SYSDATE
+		WHERE SC_NUM=#{SC_NUM}
+	</update>
+	<delete id="removeSchedule" parameterType="int">
+		DELETE
+		FROM SCHEDULE
+		WHERE SC_NUM=#{SC_NUM}
+	</delete>
+</mapper>

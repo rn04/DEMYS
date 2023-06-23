@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ducks.demys.boot.repository.CalendarRepository">
+   <select id="getCalendarList" resultType="Calendar">
+      SELECT c.*
+      FROM CALENDAR c
+      WHERE MEMBER_NUM=#{MEMBER_NUM}
+   </select>
+   <select id="selectCalendarSequenceNextValue" resultType="int">
+      SELECT
+      CALENDAR_seq.nextVal
+      FROM DUAL
+   </select>
+   <update id="registGo">
+       INSERT INTO 
+       CALENDAR (SC_NUM, SC_NAME, SC_CONTENT, SC_IMP, SC_TYPE, SC_STARTDATE, SC_ENDDATE, SC_PLACE, SC_STATUS, PJ_NUM, MEMBER_NUM, TASKS_NUM, BACKGROUNDCOLOR, TEXTCOLOR, BORDERCOLOR)
+      VALUES (#{SC_NUM, jdbcType=INTEGER}, #{SC_NAME, jdbcType=VARCHAR}, #{SC_CONTENT, jdbcType=VARCHAR}, #{SC_IMP, jdbcType=INTEGER}, #{SC_TYPE, jdbcType=VARCHAR}, TO_TIMESTAMP(#{START, jdbcType=VARCHAR},'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP(#{END, jdbcType=VARCHAR},'YYYY-MM-DD HH24:MI:SS'), #{SC_PLACE, jdbcType=VARCHAR}, #{SC_STATUS, jdbcType=INTEGER}, #{PJ_NUM, jdbcType=INTEGER}, #{MEMBER_NUM, jdbcType=INTEGER}, #{TASKS_NUM, jdbcType=INTEGER}, #{BACKGROUNDCOLOR , jdbcType=VARCHAR}, #{TEXTCOLOR , jdbcType=VARCHAR}, #{BORDERCOLOR , jdbcType=VARCHAR})
+   </update>
+       
+    
+    <delete id="removeCalendar" parameterType="int">
+        DELETE
+        FROM CALENDAR
+        WHERE SC_NUM=#{SC_NUM}
+    </delete>   
+    
+    <select id="getModal_PJList" resultType="Calendar">
+      SELECT * 
+      FROM CALENDAR C
+      INNER JOIN PROJECTS PJ ON C.SC_NUM = PJ.PJ_NUM
+        WHERE C.MEMBER_NUM = #{MEMBER_NUM}
+      ORDER BY SC_NUM;
+   </select>
+     
+     <update id="modifyCalendar" parameterType="Calendar">
+      UPDATE CALENDAR 
+      SET 
+      SC_NAME=#{SC_NAME},SC_STARTDATE=TO_TIMESTAMP(#{START, jdbcType=VARCHAR},'YYYY-MM-DD HH24:MI:SS'),SC_ENDDATE= TO_DATE(#{END, jdbcType=VARCHAR},'YYYY-MM-DD HH24:MI:SS'),SC_STATUS=#{SC_STATUS},PJ_NUM=#{PJ_NUM},SC_TYPE=#{SC_TYPE},SC_IMP=#{SC_IMP},SC_PLACE=#{SC_PLACE},SC_CONTENT=#{SC_CONTENT},SC_UPDATEDATE=SYSDATE
+      WHERE SC_NUM=#{SC_NUM}
+   </update>
+   
+   <select id="getCalendardetail" resultType="Calendar">
+      SELECT c.*
+      FROM CALENDAR c
+      WHERE SC_NUM=#{SC_NUM, jdbcType=INTEGER}
+   </select>
+   
+   
+    </mapper>

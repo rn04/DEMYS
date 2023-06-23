@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ContactsMapper">
+	<select id="getContactsList" resultType="contacts">
+		SELECT *
+		FROM CONTACTS
+		ORDER BY CONTACTS_NUM DESC
+	</select>
+	<select id="getContactsListByPJ_NUM" parameterType="int" resultType="contacts">
+		SELECT *
+		FROM CONTACTS
+		WHERE PJ_NUM=#{PJ_NUM}
+		ORDER BY CONTACTS_NUM DESC
+	</select>
+	<select id="getContactsByCT_NUM" parameterType="int"
+		resultType="contacts">
+		SELECT *
+		FROM CONTACTS
+		WHERE CT_NUM=#{CT_NUM}
+	</select>
+	<select id="selectContactsSequenceNextValue" resultType="int">
+		SELECT
+		CONTACTS_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registContacts" parameterType="contacts">
+		INSERT INTO
+		CONTACTS(CT_NAME,CT_TEL,CT_CEO,CT_MANAGER,CT_MG_TEL,CT_TYPE,CT_ADDR,CT_EMAIL)
+		VALUES(#{CT_NAME},#{CT_TEL},#{CT_CEO},#{CT_MANAGER},#{CT_MG_TEL},#{CT_TYPE},#{CT_ADDR},#{CT_EMAIL})
+	</insert>
+	<update id="modifyContacts" parameterType="contacts">
+		UPDATE CONTACTS
+		SET
+		CT_NAME=#{CT_NAME},CT_TEL=#{CT_TEL},CT_CEO=#{CT_CEO},CT_MANAGER=#{CT_MANAGER},CT_MG_TEL=#{CT_MG_TEL},CT_TYPE=#{CT_TYPE},CT_ADDR=#{CT_ADDR},CT_EMAIL=#{CT_EMAIL},CT_UPDATEDATE=SYSDATE
+		WHERE CT_NUM=#{CT_NUM}
+	</update>
+	<delete id="removeContacts" parameterType="int">
+		DELETE
+		FROM CONTACTS
+		WHERE CT_NUM=#{CT_NUM}
+	</delete>
+</mapper>

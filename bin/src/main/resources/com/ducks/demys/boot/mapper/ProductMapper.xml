@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProductMapper">
+	<select id="getProductListByPJ_NUM" parameterType="int" resultType="product">
+		SELECT *
+		FROM PRODUCT
+		WHERE PJ_NUM=#{PJ_NUM}
+		ORDER BY PRODUCT_NUM DESC
+	</select>
+	<select id="getProductByPRODUCT_NUM" parameterType="int"
+		resultType="product">
+		SELECT *
+		FROM PRODUCT
+		WHERE PRODUCT_NUM=#{PRODUCT_NUM}
+	</select>
+	<select id="selectProductSequenceNextValue" resultType="int">
+		SELECT
+		PRODUCT_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registProduct" parameterType="product">
+		INSERT INTO
+		PRODUCT(PRODUCT_STEP,PRODUCT_TITLE,PRODUCT_CONTENT,PRODUCT_STATUS,MEMBER_NUM,PJ_NUM)
+		VALUES(#{PRODUCT_STEP},#{PRODUCT_TITLE},#{PRODUCT_CONTENT},#{PRODUCT_STATUS},#{MEMBER_NUM},#{PJ_NUM})
+	</insert>
+	<update id="modifyProduct" parameterType="product">
+		UPDATE PRODUCT
+		SET
+		PRODUCT_STEP=#{PRODUCT_STEP},PRODUCT_TITLE=#{PRODUCT_TITLE},PRODUCT_CONTENT=#{PRODUCT_CONTENT},PRODUCT_STATUS=#{PRODUCT_STATUS},MEMBER_NUM=#{MEMBER_NUM},PJ_NUM=#{PJ_NUM},PRODUCT_UPDATEDATE=SYSDATE
+		WHERE PRODUCT_NUM=#{PRODUCT_NUM}
+	</update>
+	<delete id="removeProduct" parameterType="int">
+		DELETE
+		FROM PRODUCT
+		WHERE PRODUCT_NUM=#{PRODUCT_NUM}
+	</delete>
+</mapper>

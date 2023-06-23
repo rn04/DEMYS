@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ducks.demys.boot.repository.MemberRepository">
+
+	<sql id="search">
+		<if test="searchType == 'mn'.toString()">
+			and MEMBER_NAME like '%'||#{keyword}||'%'
+		</if>
+		<if test="searchType == 'md'.toString()">
+			and MEMBER_DEP like '%'||#{keyword}||'%'
+		</if>
+	</sql>
+	
+	<select id="getMemberListSearch" resultType="Member">
+		SELECT * 
+		FROM MEMBER 
+		WHERE MEMBER_NUM IS NOT NULL
+		<include refid="search"/>
+		ORDER BY MEMBER_NUM DESC
+	</select>
+
+	<select id="getMemberList" resultType="member">
+		SELECT * 
+		FROM MEMBER 
+		ORDER BY MEMBER_NUM DESC
+	</select>
+	
+	<select id="getMemberByMEMBER_NUM" parameterType="int" resultType="member">
+		SELECT * 
+		FROM MEMBER 
+		WHERE MEMBER_NUM=#{MEMBER_NUM}
+	</select>
+	
+	 <select id="findByPassword" parameterType="String"  resultType="member">
+        SELECT MEMBER_PW
+        FROM MEMBER
+       	WHERE MEMBER_AUTHORITY = '3'
+    </select>
+    
+	 <select id="getMemberByUpdateCode" resultType="member">
+        SELECT *
+        FROM MEMBER
+       	WHERE MEMBER_AUTHORITY = '3'
+    </select>
+	
+	<select id="getMemberByMEMBER_ID" parameterType="String" resultType="member">
+		SELECT * 
+		FROM MEMBER 
+		WHERE MEMBER_ID=#{MEMBER_ID}
+	</select>
+
+	<select id="readMember" parameterType="String" resultType="member">
+		SELECT * 
+		FROM MEMBER 
+		WHERE MEMBER_ID=#{MEMBER_ID}
+	</select>
+	
+	<select id="selectMemberSequenceNextValue" resultType="int">
+		SELECT MEMBER_seq.nextVal
+		FROM DUAL
+	</select>
+	
+	<select id="getMemberByMEMBER_DEP" resultType="Member">
+		SELECT * 
+		FROM MEMBER 
+		WHERE MEMBER_DEP=#{MEMBER_DEP}
+	</select>
+	
+	
+	<!-- 인증번호 확인 -->
+	<select id="verifyVerificationCode" parameterType="String" resultType="String">
+	    SELECT VERTIFICATION_CODE
+	    FROM MEMBER
+	    WHERE MEMBER_ID = #{MEMBER_ID}
+	</select>
+
+	<update id="registMember" parameterType="member">
+		INSERT INTO 
+		MEMBER(MEMBER_NUM,MEMBER_ID,MEMBER_PW,MEMBER_NAME,MEMBER_PIC,MEMBER_PHONE,MEMBER_EMAIL,MEMBER_AUTHORITY,MEMBER_DEP,MEMBER_POSITION)
+		VALUES(#{MEMBER_NUM},#{MEMBER_ID},#{MEMBER_PW},#{MEMBER_NAME},#{MEMBER_PIC},#{MEMBER_PHONE},#{MEMBER_EMAIL},#{MEMBER_AUTHORITY},#{MEMBER_DEP},#{MEMBER_POSITION})
+	</update>
+	
+	<select id="idCheck" parameterType="String" resultType="member">
+		SELECT * 
+		FROM MEMBER 
+		WHERE MEMBER_ID=#{MEMBER_ID}
+	</select>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="updatePassword">
+		  UPDATE MEMBER
+		  SET MEMBER_PW = #{MEMBER_PW}
+		  WHERE VERTIFICATION_CODE = #{VERTIFICATION_CODE}
+	</update>
+	<!-- 해당 아이디에 인증코드 저장 -->
+	<update id="updateVerificationCode" parameterType="member">
+	  UPDATE MEMBER
+	  SET VERTIFICATION_CODE = #{VERTIFICATION_CODE}
+	  WHERE MEMBER_ID = #{MEMBER_ID}
+	</update>
+		
+	<update id="modifyMember" parameterType="member">
+		UPDATE MEMBER 
+		SET 
+		MEMBER_PW=#{MEMBER_PW},MEMBER_PHONE=#{MEMBER_PHONE},MEMBER_EMAIL=#{MEMBER_EMAIL},MEMBER_UPDATEDATE=SYSDATE
+		WHERE MEMBER_NUM=#{MEMBER_NUM}
+	</update>
+	
+	<update id="modifyForLegalMember" parameterType="member">
+		UPDATE MEMBER 
+		SET 
+		MEMBER_NAME=#{MEMBER_NAME},MEMBER_PIC=#{MEMBER_PIC},MEMBER_PHONE=#{MEMBER_PHONE},MEMBER_EMAIL=#{MEMBER_EMAIL},MEMBER_DEP=#{MEMBER_DEP},UPDATEDATE=SYSDATE
+		<if test="MEMBER_AUTHORITY != NULL">
+		,MEMBER_AUTHORITY=#{MEMBER_AUTHORITY}
+		</if>
+		<if test="MEMBER_STATUS != NULL">
+		,MEMBER_STATUS=#{MEMBER_STATUS},
+		</if>
+		<if test="MEMBER_STATUS == 3">
+		,QUITDATE=SYSDATE
+		</if>
+		WHERE MEMBER_NUM=#{MEMBER_NUM}
+	</update>
+	
+	<delete id="removeMember" parameterType="int">
+		DELETE 
+		FROM MEMBER 
+		WHERE MEMBER_NUM=#{MEMBER_NUM}
+	</delete>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Mb_AttachMapper">
+	<select id="getMb_AttachListByMB_NUM" parameterType="int" resultType="mbat">
+		SELECT *
+		FROM MB_ATTACH
+		WHERE MB_NUM=#{MB_NUM}
+		ORDER BY MBAT_NUM DESC
+	</select>
+	<select id="getMbatByMBAT_NUM" parameterType="int"
+		resultType="mbat">
+		SELECT *
+		FROM MB_ATTACH
+		WHERE MBAT_NUM=#{MBAT_NUM}
+	</select>
+	<select id="selectMb_AttachSequenceNextValue" resultType="int">
+		SELECT
+		MB_ATTACH_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registMb_Attach" parameterType="mbat">
+		INSERT INTO
+		MB_ATTACH(MBAT_FILENAME,MBAT_FILETYPE,MBAT_UPLOADPATH,MB_NUM)
+		VALUES(#{MBAT_FILENAME},#{MBAT_FILETYPE},#{MBAT_UPLOADPATH},#{MB_NUM})
+	</insert>
+	<delete id="removeMb_Attach" parameterType="int">
+		DELETE
+		FROM MB_ATTACH
+		WHERE MBAT_NUM=#{MBAT_NUM}
+	</delete>
+	<delete id="removeMb_AttachAll" parameterType="int">
+		DELETE
+		FROM MB_ATTACH
+		WHERE MB_NUM=#{MB_NUM}
+	</delete>
+</mapper>

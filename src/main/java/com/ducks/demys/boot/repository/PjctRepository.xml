@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ducks.demys.boot.repository.PjctRepository">
+	
+	<select id="getContactsPjctList" resultType="Pjct">
+		SELECT * 
+		FROM PJCT PJ
+		INNER JOIN CONTACTS C ON C.CT_NUM = PJ.CT_NUM
+        INNER JOIN PROJECTS P ON PJ.PJ_NUM = P.PJ_NUM
+		WHERE PJ.CT_TYPE = 2 AND P.PJ_NUM =#{PJ_NUM}
+        ORDER BY PJCT_NUM
+	</select>
+	
+	<select id="getPjctListByPJ_NUM" resultType="Pjct">
+		SELECT *
+		FROM PJCT
+		WHERE PJ_NUM=#{PJ_NUM}
+		ORDER BY PJCT_NUM DESC
+	</select>
+	
+	<select id="getContactsPjctListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM PJCT PJ
+		INNER JOIN CONTACTS C ON C.CT_NUM = PJ.CT_NUM
+        INNER JOIN PROJECTS P ON PJ.PJ_NUM = P.PJ_NUM
+		WHERE PJ.CT_TYPE = 2 AND P.PJ_NUM =#{PJ_NUM}
+        ORDER BY PJCT_NUM
+	</select>
+	
+	<select id="getPjctListByCT_NUM" resultType="Pjct">
+		SELECT *
+		FROM PJCT
+		WHERE CT_NUM=#{CT_NUM}
+		ORDER BY PJCT_NUM DESC
+	</select>
+	
+	<select id="getPjctByPjct_NUM" resultType="Pjct">
+		SELECT *
+		FROM PJCT
+		WHERE PJCT_NUM=#{PJCT_NUM}
+	</select>
+	
+	<select id="selectPjctSequenceNextValue" resultType="int">
+		SELECT
+		PJCT_seq.nextVal
+		FROM DUAL
+	</select>
+	
+	<delete id="removePjct">
+		DELETE
+		FROM PJCT
+		WHERE PJCT_NUM=#{PJCT_NUM}
+	</delete>
+	
+	<insert id="registPjct">
+		INSERT INTO
+		PJCT(PJCT_NUM,CT_NUM,PJ_NUM,CT_TYPE)
+		VALUES(#{PJCT_NUM},#{CT_NUM},#{PJ_NUM},#{CT_TYPE})
+	</insert>
+	
+	<update id="modifyPjct">
+		UPDATE PJCT
+		SET
+		CT_NUM=#{CT_NUM},PJ_NUM=#{PJ_NUM},PJCT_TYPE=#{PJCT_TYPE}
+		WHERE PJCT_NUM=#{PJCT_NUM}
+	</update>
+	
+</mapper>

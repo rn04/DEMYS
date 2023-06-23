@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MeetingBookMapper">
+	<select id="getMeetingBookListByPJ_NUM" parameterType="int" resultType="meetingBook">
+		SELECT *
+		FROM MEETINGBOOK
+		WHERE PJ_NUM=#{PJ_NUM}
+		ORDER BY MB_NUM DESC
+	</select>
+	<select id="getMeetingBookByMB_NUM" parameterType="int"
+		resultType="meetingBook">
+		SELECT *
+		FROM MEETINGBOOK
+		WHERE MB_NUM=#{MB_NUM}
+	</select>
+	<select id="selectMeetingBookSequenceNextValue" resultType="int">
+		SELECT
+		MEETINGBOOK_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registMeetingBook" parameterType="meetingBook">
+		INSERT INTO
+		MEETINGBOOK(MB_TITLE,MB_CONTENT,MEMBER_NUM,PJ_NUM)
+		VALUES(#{MB_TITLE},#{MB_CONTENT},#{MEMBER_NUM},#{PJ_NUM})
+	</insert>
+	<update id="modifyMeetingBook" parameterType="meetingBook">
+		UPDATE MEETINGBOOK
+		SET
+		MB_TITLE=#{MB_TITLE},MB_CONTENT=#{MB_CONTENT},MB_UPDATEDATE=SYSDATE
+		WHERE MB_NUM=#{MB_NUM}
+	</update>
+	<delete id="removeMeetingBook" parameterType="int">
+		DELETE
+		FROM MEETINGBOOK
+		WHERE MB_NUM=#{MB_NUM}
+	</delete>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Budget_DetailMapper">
+	<select id="getBuddtListByBUD_NUM" parameterType="int" resultType="buddt">
+		SELECT *
+		FROM BUDGET_DETAIL
+		WHERE BUD_NUM=#{BUD_NUM}
+		ORDER BY BUDDT_NUM DESC
+	</select>
+	<select id="getBuddtByBUDDT_NUM" parameterType="int"
+		resultType="buddt">
+		SELECT *
+		FROM BUDGET_DETAIL
+		WHERE BUDDT_NUM=#{BUDDT_NUM}
+	</select>
+	<select id="selectBuddtSequenceNextValue" resultType="int">
+		SELECT
+		BUDGET_DETAIL_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registBUDDT" parameterType="buddt">
+		INSERT INTO
+		BUDGET_DETAIL(BUDDT_TYPE,BUDDT_COST,BUDDT_INFO,BUDDT_ETC)
+		VALUES(#{BUDDT_TYPE},#{BUDDT_COST},#{BUDDT_INFO},#{BUDDT_ETC})
+	</insert>
+	<update id="modifyBUDDT" parameterType="buddt">
+		UPDATE BUDGET_DETAIL
+		SET
+		BUDDT_TYPE=#{BUDDT_TYPE},BUDDT_COST=#{BUDDT_COST},BUDDT_INFO=#{BUDDT_INFO},BUDDT_ETC=#{BUDDT_ETC},BUDDT_UPDATEDATE=SYSDATE
+		WHERE BUDDT_NUM=#{BUDDT_NUM}
+	</update>
+	<delete id="removeBUDDT" parameterType="int">
+		DELETE
+		FROM BUDGET_DETAIL
+		WHERE BUDDT_NUM=#{BUDDT_NUM}
+	</delete>
+</mapper>

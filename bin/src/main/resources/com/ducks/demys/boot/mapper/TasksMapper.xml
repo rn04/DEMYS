@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="TasksMapper">
+	<select id="getTasksListByMEMBER_NUM" parameterType="int" resultType="tasks">
+		SELECT *
+		FROM TASKS
+		WHERE MEMBER_NUM=#{MEMBER_NUM}
+		ORDER BY TASKS_NUM DESC
+	</select>
+	<select id="getTasksList"
+		resultType="tasks">
+		SELECT *
+		FROM TASKS
+		ORDER BY TASKS_NUM DESC
+	</select>
+	<select id="getTasksByTASKS_NUM" parameterType="int"
+		resultType="tasks">
+		SELECT *
+		FROM TASKS
+		WHERE TASKS_NUM=#{TASKS_NUM}
+	</select>
+	<select id="selectTasksSequenceNextValue" resultType="int">
+		SELECT
+		TASKS_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registTasks" parameterType="tasks">
+		INSERT INTO
+		TASKS(TASKS_CONTENT,TASKS_STATUS,TASKS_IMP,TASKS_ENDDATE,TASKS_SHARE,MEMBER_NUM)
+		VALUES(#{TASKS_CONTENT},#{TASKS_STATUS},#{TASKS_IMP},#{TASKS_IMP},#{TASKS_SHARE},#{MEMBER_NUM})
+	</insert>
+	<update id="modifyTasks" parameterType="tasks">
+		UPDATE TASKS
+		SET
+		TASKS_CONTENT=#{TASKS_CONTENT},TASKS_STATUS=#{TASKS_STATUS},TASKS_IMP=#{TASKS_IMP},TASKS_ENDDATE=#{TASKS_ENDDATE},TASKS_SHARE=#{TASKS_SHARE},MEMBER_NUM=#{MEMBER_NUM}
+		WHERE TASKS_NUM=#{TASKS_NUM}
+	</update>
+	<delete id="removeTasks" parameterType="int">
+		DELETE
+		FROM TASKS
+		WHERE TASKS_NUM=#{TASKS_NUM}
+	</delete>
+</mapper>

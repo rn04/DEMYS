@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ducks.demys.boot.repository.UnitworkRepository">
+   <select id="getUnitworkListByMEMBER_NUM" resultType="Unitwork">
+      SELECT *
+      FROM UNITWORK
+      WHERE MEMBER_NUM=#{MEMBER_NUM}
+      ORDER BY U.UW_STARTDATE DESC
+   </select>
+   <select id="getUnitworkListPM" resultType="Unitwork">
+      SELECT *
+      FROM UNITWORK U
+      INNER JOIN MEMBER M ON M.MEMBER_NUM = U.MEMBER_NUM
+      WHERE PJ_NUM=#{PJ_NUM}
+      ORDER BY U.UW_STARTDATE DESC
+<!--       SELECT U.*, T.TASK_NUM
+      FROM UNITWORK U, TASKS T
+      WHERE U.MEMBER_NUM = T.MEMBER_NUM
+      ORDER BY T.TASKS_NUM DESC -->
+   </select>
+   <select id="getUnitworkListPA" resultType="Unitwork">
+      SELECT *
+      FROM UNITWORK U
+      INNER JOIN MEMBER M ON M.MEMBER_NUM = U.MEMBER_NUM
+      WHERE U.PJ_NUM=#{PJ_NUM} AND U.MEMBER_NUM=#{MEMBER_NUM}
+      ORDER BY U.UW_STARTDATE DESC
+   </select>
+   <select id="getUnitworkByUW_NUM" resultType="Unitwork">
+      SELECT *
+      FROM UNITWORK
+      WHERE UW_NUM=#{UW_NUM}
+   </select>
+   <select id="selectUnitworkSequenceNextValue" resultType="int">
+      SELECT
+      UNITWORK_seq.nextVal
+      FROM DUAL
+   </select>
+   <insert id="registUnitwork">
+      INSERT INTO
+      UNITWORK(UW_NUM)
+      VALUES(#{UW_NUM})
+   </insert>
+   <update id="modifyUnitwork">
+      UPDATE UNITWORK
+      SET
+      UW_NAME=#{UW_NAME},UW_STARTDATE=#{UW_STARTDATE},UW_ENDDATE=#{UW_ENDDATE},UW_PERCENT=#{UW_PERCENT},UW_STATUS=#{UW_STATUS}
+      WHERE UW_NUM=#{UW_NUM}
+   </update>
+   <delete id="removeUnitwork" parameterType="int">
+      DELETE
+      FROM UNITWORK
+      WHERE UW_NUM=#{UW_NUM}
+   </delete>
+</mapper>

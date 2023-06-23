@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ducks.demys.boot.repository.Issue_AttachRepository">
+	<select id="getIssue_AttachListByISSUE_NUM" resultType="Issue_Attach">
+		SELECT *
+		FROM ISSUE_ATTACH
+		WHERE ISSUE_NUM=#{ISSUE_NUM}
+		ORDER BY ISSUEAT_NUM DESC
+	</select>
+	<select id="getIssueatByISSUEAT_NUM" resultType="Issue_Attach">
+		SELECT *
+		FROM ISSUE_ATTACH
+		WHERE ISSUEAT_NUM=#{ISSUEAT_NUM}
+	</select>
+	<select id="selectIssue_AttachSequenceNextValue" resultType="int">
+		SELECT
+		ISSUE_ATTACH_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registIssue_Attach">
+		INSERT INTO
+		ISSUE_ATTACH(ISSUEAT_FILENAME,ISSUEAT_FILETYPE,ISSUEAT_UPLOADPATH,ISSUE_NUM)
+		VALUES(#{ISSUEAT_FILENAME},#{ISSUEAT_FILETYPE},#{ISSUEAT_UPLOADPATH},#{ISSUE_NUM})
+	</insert>
+	<delete id="removeIssue_Attach">
+		DELETE
+		FROM ISSUE_ATTACH
+		WHERE ISSUEAT_NUM=#{ISSUEAT_NUM}
+	</delete>
+	<delete id="removeIssue_AttachAll">
+		DELETE
+		FROM ISSUE_ATTACH
+		WHERE ISSUE_NUM=#{ISSUE_NUM}
+	</delete>
+</mapper>

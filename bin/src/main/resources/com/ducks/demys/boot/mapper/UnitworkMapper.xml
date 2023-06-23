@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UnitworkMapper">
+	<select id="getUnitworkListByMEMBER_NUM" parameterType="int" resultType="unitWork">
+		SELECT *
+		FROM UNITWORK
+		WHERE MEMBER_NUM=#{MEMBER_NUM}
+		ORDER BY TASKS_NUM DESC
+	</select>
+	<select id="getUnitworkListByPJ_NUM" parameterType="int"
+		resultType="unitWork">
+		SELECT *
+		FROM UNITWORK
+		WHERE PJ_NUM=#{PJ_NUM}
+		ORDER BY TASKS_NUM DESC
+	</select>
+	<select id="getUnitworkByUW_NUM" parameterType="int"
+		resultType="unitWork">
+		SELECT *
+		FROM UNITWORK
+		WHERE UW_NUM=#{UW_NUM}
+	</select>
+	<select id="selectUnitworkSequenceNextValue" resultType="int">
+		SELECT
+		UNITWORK_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registUnitwork" parameterType="unitWork">
+		INSERT INTO
+		UNITWORK(UW_TYPE,UW_NAME,UW_STARTDATE,UW_ENDDATE,UW_PERCENT,UW_STATUS,UW_NOTE,MEMBER_NUM,PJ_NUM)
+		VALUES(#{UW_TYPE},#{UW_NAME},#{UW_STARTDATE},#{UW_ENDDATE},#{UW_PERCENT},#{UW_STATUS},#{UW_NOTE},#{MEMBER_NUM},#{PJ_NUM})
+	</insert>
+	<update id="modifyUnitwork" parameterType="unitWork">
+		UPDATE UNITWORK
+		SET
+		UW_TYPE=#{UW_TYPE},UW_NAME=#{UW_NAME},UW_STARTDATE=#{UW_STARTDATE},UW_ENDDATE=#{UW_ENDDATE},UW_PERCENT=#{UW_PERCENT},UW_STATUS=#{UW_STATUS},UW_NOTE=#{UW_NOTE},MEMBER_NUM=#{MEMBER_NUM},PJ_NUM=#{PJ_NUM}
+		WHERE UW_NUM=#{UW_NUM}
+	</update>
+	<delete id="removeUnitwork" parameterType="int">
+		DELETE
+		FROM UNITWORK
+		WHERE TASKS_NUM=#{UW_NUM}
+	</delete>
+</mapper>

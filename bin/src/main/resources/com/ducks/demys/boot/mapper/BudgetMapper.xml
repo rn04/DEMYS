@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BudgetMapper">
+
+	<select id="getBudgetByBudget_NUM" parameterType="int"
+		resultType="budget">
+		SELECT *
+		FROM BUDGET
+		WHERE BUD_NUM=#{BUD_NUM}
+	</select>
+	<select id="getBudgetByPJ_NUM" parameterType="int"
+		resultType="budget">
+		SELECT *
+		FROM BUDGET
+		WHERE PJ_NUM=#{PJ_NUM}
+	</select>
+	<select id="selectBudgetSequenceNextValue" resultType="int">
+		SELECT
+		BUDGET_seq.nextVal
+		FROM DUAL
+	</select>
+	<insert id="registBudget" parameterType="budget">
+		INSERT INTO
+		BUDGET(BUD_TYPE,BUD_STATUS,PJ_NUM,MEMBER_NUM)
+		VALUES(#{BUD_TYPE},#{BUD_STATUS},#{PJ_NUM},#{MEMBER_NUM})
+	</insert>
+	<update id="modifyBudget" parameterType="budget">
+		UPDATE BUDGET
+		SET
+		BUD_TYPE=#{BUD_TYPE},BUD_STATUS=#{BUD_STATUS},PJ_NUM=#{PJ_NUM},MEMBER_NUM=#{MEMBER_NUM},BUD_UPDATEDATE=SYSDATE
+		WHERE BUD_NUM=#{BUD_NUM}
+	</update>
+	<delete id="removeBudget" parameterType="int">
+		DELETE
+		FROM BUDGET
+		WHERE BUD_NUM=#{BUD_NUM}
+	</delete>
+</mapper>

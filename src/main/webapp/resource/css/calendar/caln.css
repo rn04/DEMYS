@@ -1,0 +1,54 @@
+/* 월, 주, 일, 일정목록 버튼 */
+.fc .fc-button-primary {
+   background-color: transparent;
+   border: 1px solid #313641;
+   color: #1F2937;
+}
+
+/* 오늘 버튼  */
+.fc .fc-button-primary:disabled {
+   background-color: #313641;
+   border: 1px solid #313641;
+   color: #FFF;
+}
+
+/* 버튼 호버, 액티브 */
+.fc .fc-button-primary:hover, .fc .fc-button-group>.fc-button:hover, .fc .fc-button-group>.fc-button:focus,
+   .fc .fc-button-group>.fc-button:active, .fc .fc-button-group>.fc-button.fc-button-active,
+   .fc .fc-button-primary:not(:disabled):active, .fc .fc-button-primary:not(:disabled).fc-button-active {
+   background-color: #313641;
+   border: 1px solid #313641;
+   color: #FFF;
+}
+
+/* 버튼 그림자 */
+.fc .fc-button-primary:focus, .fc .fc-button-primary:not(:disabled):active:focus, .fc .fc-button-primary:not(:disabled).fc-button-active:focus {
+   box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.2);
+}
+
+/* 일요일 날짜 */
+.fc-day-sun .fc-scrollgrid-sync-inner {
+   background-color: #f7efea;
+}
+
+/* 토요일 날짜 */
+.fc-day-sat .fc-scrollgrid-sync-inner {
+   background-color: #EAF2F7;
+}
+
+.add-button {
+   display:relative;
+   
+   margin-top:5px;
+   top: 1px;
+   background: #2C3E50;
+   border: 0;
+   color: white;
+   height: 35px;
+   border-radius: 3px;
+   width: 100px;
+}
+.button_all{
+   display:flex;
+   margin-top:10px;
+}

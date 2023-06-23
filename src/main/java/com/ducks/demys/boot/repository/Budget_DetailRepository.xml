@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ducks.demys.boot.repository.Budget_DetailRepository">
+   <select id="getBuddtListByBUD_NUM" resultType="Budget_Detail">
+      SELECT *
+      FROM BUDGET_DETAIL BD
+      INNER JOIN PROJECTS P ON P.PJ_NUM = BD.PJ_NUM
+      WHERE BD.PJ_NUM = #{PJ_NUM}
+      ORDER BY BUDDT_NUM DESC
+   </select>
+   <select id="getBuddtListByBUD_NUMCount" resultType="int">
+      SELECT COUNT(*)
+      FROM BUDGET_DETAIL BD
+      INNER JOIN PROJECTS P ON P.PJ_NUM = BD.PJ_NUM
+      WHERE BD.PJ_NUM = #{PJ_NUM}
+      ORDER BY BUDDT_NUM DESC
+   </select>
+   <select id="getBuddtByBUDDT_NUM" resultType="Budget_Detail">
+      SELECT *
+      FROM BUDGET_DETAIL BD
+      INNER JOIN PROJECTS P ON P.PJ_NUM = BD.PJ_NUM
+      WHERE BD.PJ_NUM = #{PJ_NUM}
+   </select>
+   <select id="selectBuddtSequenceNextValue" resultType="int">
+      SELECT
+      BUDGET_DETAIL_seq.nextVal
+      FROM DUAL
+   </select>
+   
+   <insert id="registBUDDT">
+      INSERT INTO
+      BUDGET_DETAIL(BUDDT_NUM,BUDDT_TYPE,BUDDT_COST,BUDDT_INFO,BUDDT_ETC,PJ_NUM)
+      VALUES(#{BUDDT_NUM},#{BUDDT_TYPE},#{BUDDT_COST},#{BUDDT_INFO},#{BUDDT_ETC},#{PJ_NUM})
+   </insert>
+   <update id="modifyBUDDT">
+      UPDATE BUDGET_DETAIL
+      SET
+      BUDDT_TYPE=#{BUDDT_TYPE},BUDDT_COST=#{BUDDT_COST},BUDDT_INFO=#{BUDDT_INFO},BUDDT_ETC=#{BUDDT_ETC},BUDDT_UPDATEDATE=SYSDATE
+      WHERE BUDDT_NUM=#{BUDDT_NUM}
+   </update>
+   <delete id="removeBUDDT">
+      DELETE
+      FROM BUDGET_DETAIL
+      WHERE BUDDT_NUM=#{BUDDT_NUM}
+   </delete>
+</mapper>

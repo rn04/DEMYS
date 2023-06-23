@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ducks.demys.boot.repository.RequireRepository">
+   <select id="getRequireListByPJ_NUM" resultType="Require">
+      SELECT r.*, m.*
+      FROM REQUIRE r, MEMBER m
+      WHERE r.MEMBER_NUM = m.MEMBER_NUM
+   </select>
+   
+   <select id="getRequireByREQUIRE_NUM" resultType="Require">
+      SELECT *
+      FROM REQUIRE
+      WHERE REQUIRE_NUM=#{REQUIRE_NUM}
+   </select>
+   <!-- 수정 -->
+   <select id="getSearchRequire" resultType="Require">
+      SELECT r.*, m.MEMBER_NAME
+      FROM REQUIRE r, MEMBER m
+      WHERE r.MEMBER_NUM = m.MEMBER_NUM
+      AND r.PJ_NUM = #{PJ_NUM}
+      <if test="searchKeyword != ''">
+            <choose>
+               <when test="searchKeywordTypeCode == 'REQUIRE_TITLE'">
+               AND r.REQUIRE_TITLE LIKE '%'||#{searchKeyword}||'%'
+               </when>
+               <when test="searchKeywordTypeCode == 'REQURE_DETAIL'">
+               AND r.REQUIRE_DETAIL LIKE '%'||#{searchKeyword}||'%'
+               </when>
+               <otherwise>
+               AND (
+                    r.REQUIRE_TITLE LIKE '%'||#{searchKeyword}||'%'
+                    OR
+                    r.REQUIRE_DETAIL LIKE '%'||#{searchKeyword}||'%'
+                )
+               </otherwise>
+            </choose>
+      </if>
+      ORDER BY r.REQUIRE_NUM DESC
+      <!-- <if test="limitTake != -1">
+         LIMIT #{limitStart}, #{limitTake}
+      </if> -->
+   </select>
+   <!-- 수정 -->
+   
+   <select id="selectRequireSequenceNextValue" resultType="int">
+      SELECT
+      REQUIRE_seq.nextVal
+      FROM DUAL
+   </select>
+   
+   <insert id="registRequire">
+      INSERT INTO
+      REQUIRE(REQUIRE_NUM, REQUIRE_LEVEL,REQUIRE_TITLE,REQUIRE_DETAIL,CT_NUM,MEMBER_NUM,PJ_NUM)
+      VALUES(#{REQUIRE_NUM},#{REQUIRE_LEVEL},#{REQUIRE_TITLE},#{REQUIRE_DETAIL},#{CT_NUM},#{MEMBER_NUM},#{PJ_NUM})
+   </insert>
+   
+   <update id="modifyRequire">
+      UPDATE REQUIRE
+      SET
+      REQUIRE_LEVEL=#{REQUIRE_LEVEL},REQUIRE_TITLE=#{REQUIRE_TITLE},REQUIRE_DETAIL=#{REQUIRE_DETAIL},CT_NUM=#{CT_NUM},MEMBER_NUM=#{MEMBER_NUM},PJ_NUM=#{PJ_NUM}
+      WHERE REQUIRE_NUM=#{REQUIRE_NUM}
+   </update>
+   
+   <delete id="removeRequire">
+      DELETE
+      FROM REQUIRE
+      WHERE REQUIRE_NUM=#{REQUIRE_NUM}
+   </delete>
+</mapper>

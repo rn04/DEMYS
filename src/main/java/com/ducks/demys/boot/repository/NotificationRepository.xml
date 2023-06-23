@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ducks.demys.boot.repository.NotificationRepository">
+	<select id="getNotificationList" parameterType="map" resultType="Notification">
+	    SELECT *
+	    FROM NOTIFICATION
+	    WHERE MEMBER_NUM = (
+	        SELECT MEMBER_NUM
+	        FROM MEMBER
+	        WHERE MEMBER_ID = #{MEMBER_ID}
+	    )
+	    AND DELSTATUS = #{DELSTATUS}
+	</select>
+	
+	<select id="getNotificationCount" resultType="int">
+	    SELECT COUNT(*)
+	    FROM NOTIFICATION
+	    WHERE MEMBER_NUM = (
+	        SELECT MEMBER_NUM
+	        FROM MEMBER
+	        WHERE MEMBER_ID = #{MEMBER_ID}
+	    ) 
+	    AND DELSTATUS = #{DELSTATUS}
+	</select>
+	
+	<update id="removeNotification" parameterType="int">
+		UPDATE NOTIFICATION
+	    SET DELSTATUS = 1
+	    WHERE DELSTATUS = 0 AND NOTI_NUM = #{NOTI_NUM};
+	</update>
+</mapper>

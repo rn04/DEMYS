@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ducks.demys.boot.repository.ProjectsRepository">
+	<sql id="TMsearch">
+      <if test="PJ_IMP != null and PJ_IMP != 0">
+         WHERE PROJECTS.PJ_IMP LIKE '%'||#{PJ_IMP}||'%' 
+      </if>
+      <if test="MEMBER_NUM != null and MEMBER_NUM != 0">
+         AND PROJECTS.MEMBER_NUM = #{MEMBER_NUM}
+      </if>
+   </sql>
+   
+   <sql id="othersearch">
+      <if test="PJ_IMP != null and PJ_IMP != 0">
+         WHERE PROJECTS.PJ_IMP LIKE '%'||#{PJ_IMP}||'%' 
+      </if>
+      <if test="MEMBER_NUM != null and MEMBER_NUM != 0">
+         AND PJHR.MEMBER_NUM = #{MEMBER_NUM} 
+      </if>
+   </sql>
+   
+   <sql id="orderby">
+      <if test="SORT =='end'.toString()">
+         ORDER BY PROJECTS.PJ_ENDDATE ASC
+      </if>
+      <if test="SORT =='reg'.toString()">
+         ORDER BY PROJECTS.PJ_REGDATE DESC
+      </if>
+   </sql>
+   
+   <sql id="search">
+      <if test="searchType == 'pn'.toString()">
+         and PJ_NAME like '%'||#{keyword}||'%'
+      </if>
+      <if test="searchType == 'cn'.toString()">
+         and CT_NAME like '%'||#{keyword}||'%'
+      </if>
+   </sql>
+	
+	<select id="getPJListForTMDashboard" resultType="ProjectsForPrint">
+      select *
+         from(select rownum as rnum,SearchPROJECTSResult.*
+         from(
+         SELECT PROJECTS.*, MEMBER.MEMBER_NAME, CONTACTS.CT_NAME, COALESCE(SUM(UNITWORK.UW_PERCENT)*100 / NULLIF(COUNT(*), 0), 0) AS SUM_PERCENT, COUNT(DISTINCT ISSUE.ISSUE_NUM) AS ISSUE_COUNT
+         FROM PROJECTS
+         JOIN MEMBER ON PROJECTS.MEMBER_NUM = MEMBER.MEMBER_NUM
+         LEFT JOIN UNITWORK ON PROJECTS.PJ_NUM = UNITWORK.PJ_NUM
+         JOIN CONTACTS ON PROJECTS.CT_NUM = CONTACTS.CT_NUM
+            JOIN ISSUE ON PROJECTS.PJ_NUM = ISSUE.PJ_NUM
+         <include refid="TMsearch" />
+         GROUP BY PROJECTS.PJ_NUM, PROJECTS.PJ_NAME, PROJECTS.PJ_STARTDATE, PROJECTS.PJ_ENDDATE, PROJECTS.PJ_REGDATE, PROJECTS.PJ_UPDATEDATE,
+          PROJECTS.PJ_IMP, PROJECTS.PJ_CONTENT, PROJECTS.PJ_STATUS, PROJECTS.PJ_TYPE, PROJECTS.PJ_FIELD, PROJECTS.MEMBER_NUM, PROJECTS.PJ_PRICE,
+          PROJECTS.CT_NUM, PROJECTS.PJ_GIT,PROJECTS.BUDGET_STATUS, MEMBER.MEMBER_NAME, CONTACTS.CT_NAME
+          <include refid="orderby" />
+          <![CDATA[
+          ) SearchPROJECTSResult
+               where rownum <= 9
+               )
+               where rnum>0
+         ]]>
+   </select>
+	
+	<select id="getPJListForOtherDashboard" resultType="ProjectsForPrint">
+	   SELECT * 
+	   FROM ( 
+	         SELECT rownum AS rnum, SearchPROJECTSResult.* 
+	       FROM ( 
+	        SELECT PROJECTS.*, MEMBER.MEMBER_NAME, CONTACTS.CT_NAME, 
+	        COALESCE(SUM(UNITWORK.UW_PERCENT)*100 / NULLIF(COUNT(*), 0), 0) AS SUM_PERCENT,  COUNT(DISTINCT ISSUE.ISSUE_NUM) AS ISSUE_COUNT
+	        FROM PROJECTS 
+	        JOIN MEMBER ON PROJECTS.MEMBER_NUM = MEMBER.MEMBER_NUM 
+	        LEFT JOIN UNITWORK ON PROJECTS.PJ_NUM = UNITWORK.PJ_NUM 
+	        JOIN CONTACTS ON PROJECTS.CT_NUM = CONTACTS.CT_NUM 
+	        JOIN ISSUE ON ISSUE.PJ_NUM = PROJECTS.PJ_NUM 
+	        JOIN PJHR ON PROJECTS.PJ_NUM = PJHR.PJ_NUM 
+	        <include refid="othersearch" /> 
+	        GROUP BY PROJECTS.PJ_NUM, PROJECTS.PJ_NAME, PROJECTS.PJ_STARTDATE, PROJECTS.PJ_ENDDATE, PROJECTS.PJ_REGDATE, PROJECTS.PJ_UPDATEDATE, 
+	        PROJECTS.PJ_IMP, PROJECTS.PJ_CONTENT, PROJECTS.PJ_STATUS, PROJECTS.PJ_TYPE, PROJECTS.PJ_FIELD, PROJECTS.MEMBER_NUM, PROJECTS.PJ_PRICE, 
+	        PROJECTS.CT_NUM, PROJECTS.PJ_GIT, PROJECTS.BUDGET_STATUS, MEMBER.MEMBER_NAME, CONTACTS.CT_NAME 
+	        <include refid="orderby" /> 
+	        <![CDATA[ 
+	       ) SearchPROJECTSResult 
+	       WHERE rownum <= 9 
+	   ) 
+	   WHERE rnum > 0 
+	   ]]>
+   </select>
+	
+	<select id="getPJListOrderByPJ_ENDDATE" resultType="Projects">
+      SELECT PJ2.PJ_NUM, PJ2.PJ_NAME, PJ2.PJ_STARTDATE, PJ2.PJ_ENDDATE, PJ2.PJ_REGDATE, PJ2.PJ_UPDATEDATE, 
+         PJ2.PJ_IMP, PJ2.PJ_CONTENT, PJ2.PJ_STATUS, PJ2.PJ_TYPE, PJ2.PJ_FIELD, PJ2.MEMBER_NUM, PJ2.PJ_PRICE, 
+         PJ2.CT_NUM, PJ2.PJ_GIT, PJ2.BUDGET_STATUS,
+          TO_NUMBER(TO_CHAR(PJ2.PJ_ENDDATE, 'DD')) - TO_NUMBER(TO_CHAR(SYSDATE, 'DD')) AS DDAY,
+          COALESCE(SUM(UNITWORK.UW_PERCENT) * 100 / NULLIF(COUNT(*), 0), 0) AS SUM_PERCENT
+      FROM PROJECTS PJ
+      JOIN (
+       SELECT *
+       FROM PROJECTS
+       WHERE TO_CHAR(SYSDATE, 'MM') = TO_CHAR(PJ_ENDDATE, 'MM') AND TO_NUMBER(TO_CHAR(PJ_ENDDATE, 'DD')) - TO_NUMBER(TO_CHAR(SYSDATE, 'DD')) > 0
+      ) PJ2 ON PJ.PJ_NUM = PJ2.PJ_NUM
+      LEFT JOIN UNITWORK ON PJ2.PJ_NUM = UNITWORK.PJ_NUM
+      GROUP BY PJ2.PJ_NUM, PJ2.PJ_NAME, PJ2.PJ_STARTDATE, PJ2.PJ_ENDDATE, PJ2.PJ_REGDATE, PJ2.PJ_UPDATEDATE, 
+        PJ2.PJ_IMP, PJ2.PJ_CONTENT, PJ2.PJ_STATUS, PJ2.PJ_TYPE, PJ2.PJ_FIELD, PJ2.MEMBER_NUM, PJ2.PJ_PRICE, 
+        PJ2.CT_NUM, PJ2.PJ_GIT, PJ2.BUDGET_STATUS
+        order by pj2.pj_enddate asc
+   </select>
+	
+	<select id="getPJList" resultType="Projects">
+		select*
+		from(
+			SELECT rownum as rnum, PJListResult.*
+			FROM(
+				SELECT P.*, C.CT_NAME, M.MEMBER_NAME
+				FROM projects P
+				INNER JOIN contacts C ON P.CT_NUM = C.CT_NUM
+				INNER JOIN member M ON P.MEMBER_NUM = M.MEMBER_NUM
+				WHERE PJ_NUM IS NOT NULL
+				<include refid="search"/>
+				ORDER BY P.PJ_REGDATE DESC
+			) PJListResult
+		<![CDATA[
+			WHERE rownum <= #{endRow}
+		) WHERE rnum > #{startRow}
+		]]>
+	</select>
+	
+<!-- 	<select id="getPJListByMEMBER_NUM" resultType="Projects">
+		SELECT *
+		FROM PROJECTS
+		WHERE MEMBER_NUM=#{MEMBER_NUM}
+		ORDER BY PJ_NUM DESC
+	</select> -->
+	
+	<select id="getPJListCount" resultType="int">
+		SELECT count(*)
+		FROM projects P
+		INNER JOIN contacts C ON P.CT_NUM = C.CT_NUM
+		INNER JOIN member M ON P.MEMBER_NUM = M.MEMBER_NUM
+		WHERE PJ_NUM IS NOT NULL
+		<include refid="search" />
+	</select>
+	<select id="getPJListCountForDashboard" resultType="int">
+		SELECT count(*)
+		FROM projects P
+	</select>
+	
+	<select id="getPJListSTATUSCount" resultType="int">
+		SELECT COUNT(*)
+		FROM PROJECTS
+		WHERE PJ_STATUS=#{PJ_STATUS}
+	</select>
+	
+	<select id="getPJByPJ_NUM" resultType="Projects">
+		SELECT *
+		FROM projects P
+		INNER JOIN contacts C ON P.CT_NUM = C.CT_NUM
+        INNER JOIN member M ON P.MEMBER_NUM = M.MEMBER_NUM
+		WHERE PJ_NUM IS NOT NULL AND PJ_NUM=#{PJ_NUM}
+	</select>
+	
+	<select id="selectPJSequenceNextValue" resultType="int">
+		SELECT
+		PROJECTS_seq.nextVal
+		FROM DUAL
+	</select>
+	
+	<select id="getPJCalList" resultType="Projects">
+		SELECT h.*, p.PJ_NAME
+        FROM PROJECTS p, PJHR h
+        WHERE p.PJ_NUM = h.PJ_NUM
+        and h.MEMBER_NUM = #{MEMBER_NUM}
+	</select>
+	
+	<insert id="registPJ">
+		INSERT INTO
+		PROJECTS(PJ_NUM, PJ_NAME, PJ_STARTDATE, PJ_ENDDATE, PJ_IMP, PJ_CONTENT, PJ_TYPE, PJ_FIELD, PJ_GIT, PJ_PRICE, MEMBER_NUM, CT_NUM)
+		VALUES(#{PJ_NUM}, #{PJ_NAME},TO_DATE(#{STRING_STARTDATE}, 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(#{STRING_ENDDATE}, 'YYYY-MM-DD HH24:MI:SS'),#{PJ_IMP},#{PJ_CONTENT},#{PJ_TYPE},#{PJ_FIELD},#{PJ_GIT},#{PJ_PRICE},#{MEMBER_NUM},#{CT_NUM})
+	</insert>
+	
+	<update id="modifyPJ">
+		UPDATE PROJECTS
+		SET
+		PJ_NAME=#{PJ_NAME},PJ_CONTENT=#{PJ_CONTENT},PJ_GIT=#{PJ_GIT},PJ_PRICE=#{PJ_PRICE},MEMBER_NUM=#{MEMBER_NUM},CT_NUM=#{CT_NUM},PJ_UPDATEDATE=SYSDATE
+		WHERE PJ_NUM=#{PJ_NUM}
+	</update>
+	
+	<update id="modifyPJBudget">
+      UPDATE PROJECTS
+      SET
+      BUDGET_STATUS=#{BUDGET_STATUS}
+      WHERE PJ_NUM=#{PJ_NUM}
+   </update>
+	
+	<delete id="removePJ">
+		DELETE
+		FROM PROJECTS
+		WHERE PJ_NUM=#{PJ_NUM}
+	</delete>
+	
+	<sql id="search2">
+      <if test="cri.searchType == 'pn'.toString()">
+         and PJ_NAME like '%'||#{cri.keyword}||'%'
+      </if>
+      <if test="cri.searchType == 'cn'.toString()">
+         and CT_NAME like '%'||#{cri.keyword}||'%'
+      </if>
+   </sql>
+
+<select id="getPJTeamList" resultType="Projects">
+      select*
+      from(
+         SELECT rownum as rnum, PJListResult.*
+         FROM(
+            SELECT P.*, C.CT_NAME, M.MEMBER_NAME
+            FROM projects P
+            INNER JOIN contacts C ON P.CT_NUM = C.CT_NUM
+            INNER JOIN member M ON P.MEMBER_NUM = M.MEMBER_NUM
+            INNER JOIN pjhr PH ON P.PJ_NUM = PH.PJ_NUM
+            WHERE PH.MEMBER_NUM = #{MEMBER_NUM}
+                
+            ORDER BY P.PJ_REGDATE DESC
+         ) PJListResult
+      <![CDATA[
+         WHERE rownum <= #{cri.endRow}
+      ) WHERE rnum > #{cri.startRow}
+      ]]>
+   </select> 
+   <select id="getPJTeamListCount" resultType="int">
+      SELECT count(*)
+      FROM projects P
+      INNER JOIN contacts C ON P.CT_NUM = C.CT_NUM
+      INNER JOIN member M ON P.MEMBER_NUM = M.MEMBER_NUM
+      INNER JOIN pjhr PH ON P.PJ_NUM = PH.PJ_NUM
+      WHERE PH.MEMBER_NUM = #{MEMBER_NUM}
+      <include refid="search2" />
+   </select>
+</mapper>

@@ -1,0 +1,80 @@
+@charset "UTF-8";
+
+.p-body-cont{
+   width:100%;
+   height:inherit;
+   padding:5px;
+}
+.header-2-menu0, .p-info-detail-title{
+   width:100%;
+   border-bottom:2px solid #797979;
+   padding:7px 0;
+}
+.header-2-menu{
+   width:150px;
+   display:flex;
+   justify-content: space-around;
+   
+}
+.header-2-menu:hover{
+   font-weight:bold;
+   font-size:18px;
+}
+/* 참여인력 정보 */
+.hr-info{
+   
+}
+.info-title{
+    width: 100%;
+    padding: 5px;
+    margin-top: 10px;
+   display: flex;
+    justify-content: flex-end;
+}
+.hr-regist-bt{
+   height:40px;
+   width:140px;
+   background-color:#153A66;
+   color:white;
+   border-radius:8px;
+}
+.hr-regist-bt:hover{
+   background-color:#11263F ;
+}
+.hr-list{
+    width: 100%;
+    height: 550px;
+    padding: 15px 45px;
+    margin: 10px 0;
+    border: 1px solid #AAAA;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.hr-list-cont{
+   width: 31%;
+    height: 180px;
+   /*  border: 2px solid #AAAAAA; */
+    border-radius: 8px;
+    margin: 20px 14px;
+    display: flex;
+    align-items: center;
+    /* background: linear-gradient(#AAAAAA 1%, white 15% 85%, #AAAAAA 99%); */
+   background-color:#F9F9F9;
+}
+.hr-list-cont:hover{
+   background-color: #F0F8FF;
+    box-sizing: border-box;
+    outline: 4px solid #B7DDFF;
+}
+.hr-img{
+   width:40%;
+   height:100%;
+}
+.hr-img>img{
+   border-top-left-radius:8px;
+   border-bottom-left-radius:8px;
+}
+
